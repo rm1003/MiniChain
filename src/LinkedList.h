@@ -13,16 +13,19 @@ template <typename T>
 class LinkedList {
     private:
         struct Node {
-            T element;
+            const T element;
             Node* next;
             Node* prev;
-            Node(const T& elem, Node* nxt = nullptr, Node* prv = nullptr)
-                :element(elem), next(nxt), prev(prv) {}
+            size_t index;
+
+            Node(const T& elem, Node* nxt = nullptr, Node* prv = nullptr, size_t idx = 0)
+                :element(elem), next(nxt), prev(prv), index(idx) {}
         };
 
         Node* head;
         Node* tail;
-        unsigned int listSize;
+        size_t listSize;
+        size_t currentIdx;
 
         void error(const string& msg) const {
             cerr << "Error in LinkedList: " << msg << endl;
@@ -31,105 +34,12 @@ class LinkedList {
 
 
     public:
+// ==========================================================================
         // constructor
-        LinkedList(): head(nullptr), tail(nullptr), listSize(0) {}
-        // copy constructor
-        LinkedList(const LinkedList& other):head(nullptr), tail(nullptr), listSize(0) {
-            Node* current = other.head;
-            while (current != nullptr) {
-                insertTail(current->element);
-                current = current->next;
-            }
-        }
-        
-        // zero-copy
-        LinkedList& operator=(const LinkedList& other) {
-            if (this != &other) {
-                clear();
-                Node* current = other.head;
-                while (current != nullptr) {
-                    insertTail(current->element);
-                    current = current->next;
-                }
-            }
-            return *this;
-        }
+        LinkedList(): head(nullptr), tail(nullptr), listSize(0), currentIdx(0) {}
 
         ~LinkedList() {
             clear();
-        }
-
-        // insert (head)
-        void insertHead(const T& element) {
-            Node* newNode = new Node(element,head,nullptr);
-            if (head != nullptr) {
-                head->prev = newNode;
-            }
-            head = newNode;
-            if (tail == nullptr) {
-                tail = newNode;
-            }
-            listSize++;
-        }
-
-        // remove (head)
-        T removeHead() {
-            if (isEmpty()) {
-                error("Cannot remove from an empty list");
-            }
-            Node* remove = head;
-            T element = remove->element;
-            head = head->next;
-            if (head == nullptr) {
-                tail = nullptr;
-            } else {
-                head->prev = nullptr;
-            }
-            delete remove;
-            listSize--;
-            return element;
-        }
-        
-        // insert (tail)
-        void insertTail(const T& element) {
-            Node* newNode = new Node(element,nullptr,tail);
-            if (isEmpty()) {
-                head = tail = newNode;
-            } else {
-                tail->next = newNode;
-                tail = newNode;
-            }
-            listSize++;
-        }
-
-        // remove (normal)
-        T remove() {
-            if (isEmpty()) {
-                error("Cannot remove from an empty list");
-            }
-
-            Node* removeNode = tail;
-            T element = removeNode->element;
-    
-            if (head == tail) {
-                head = tail = nullptr;
-            } else {
-                tail = tail->prev;
-                tail->next = nullptr;
-            }
-
-            delete removeNode;
-            listSize--;
-            return element;
-        }
-        
-        // return list size
-        unsigned int getSize() const {
-            return listSize;
-        }
-
-        bool isEmpty() const {
-            return listSize == 0;
         }
 
         void clear() {
@@ -141,46 +51,70 @@ class LinkedList {
             }
             head = tail = nullptr;
             listSize = 0;
+            currentIdx = 0;
         }
+// ==========================================================================
 
-
-        T& front() {
-            if (isEmpty()) {
-                error("Cannot access front of empty list");
+        // insert element
+        void insert(const T& newElement) {
+            Node* newNode = new Node(newElement, nullptr, tail, currentIdx++);
+            if (tail == nullptr) {
+                head = tail = newNode;
+            } else {
+                tail->next = newNode;
+                tail = newNode;
             }
+            listSize++;
+        }
+        
+        const T& accessWithIdx(size_t index) {
+            Node* current = head;
+            while (current != nullptr) {
+                if (current->index == index) {
+                    return current->element;
+                }
+                current = current->next;
+            }
+            error("Element not found at index: " + to_string(index));
             return head->element;
         }
 
-        const T& front() const {
+        const T& getLastElement() const {
             if (isEmpty()) {
-                error("Cannot access front of empty list");
-            }
-            return head->element;
-        }
-
-
-        T& back() {
-            if (isEmpty()) {
-                error("Cannot access back of empty list");
+                error("Cannot get last block from LinkedList");
             }
             return tail->element;
         }
 
-        const T& back() const {
+        const T& getFirstElement() const {
             if (isEmpty()) {
-                error("Cannot access back of empty list");
+                error("Cannot get last block from LinkedList");
             }
-            return tail->element;
+            return head->element;
         }
 
+        size_t size() const {
+            return listSize;
+        }
+
+        bool isEmpty() const {
+            return listSize == 0;
+        }
+
+// ==========================================================================
         void print() const {
             Node* current = head;
-            cout << "Lista: ";
+            cout << "Lista (Size " << listSize << "): " << endl;
+            cout << "================================" << endl;
             while (current != nullptr) {
-                cout << current->element;
-                if (current->next != nullptr) {
-                    cout << " <-> ";
-                }
+                cout << "Element #" << current->index << "|";
+                cout << "Prev: " << (current->prev ? to_string(current->prev->index) : "GENESIS");
+                cout << " | Next: " << (current->next ? to_string(current->next->index) : "END");
+                cout << endl;
+
+                cout << "Data: " << current->element << endl;
+                cout << "----------------------------------" << endl;
+                
                 current = current->next;
             }
             cout << endl;
