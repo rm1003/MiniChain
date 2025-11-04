@@ -17,13 +17,14 @@ using namespace std;
 
 #define MAX_HOSTNAME    64
 #define QUEUE_SIZE      5
+#define BUFFER_SIZE     8192
 
 
 class serverSocket {
     private:
         int sock_listen;
         int sock_attends;
-        char buffer[BUFSIZ + 1]; //tam = 8192
+        char buffer[BUFFER_SIZE + 1]; //tam = 8192 + 1
         struct sockaddr_in local_address, client_address;
         struct hostent *hp;
         char localhost[MAX_HOSTNAME];
@@ -34,9 +35,13 @@ class serverSocket {
         }
  
     public:
-        serverSocket(): sock_listen(0), sock_attends(0), hp(nullptr) {}
+        serverSocket(): sock_listen(0), sock_attends(0), hp(nullptr) {
+            memset(buffer, 0, BUFFER_SIZE);
+        }
 
         ~serverSocket() {
+            if (this->sock_attends > 0) close(this->sock_attends);
+            if (this->sock_listen > 0) close(this->sock_listen);
             exit(EXIT_SUCCESS);
         }
 
@@ -48,9 +53,9 @@ class serverSocket {
                 error("Not found my IP");
             }
 
-            this->local_address.sin_port = htons(port);
             bcopy((char *) this->hp->h_addr, (char *) &this->local_address.sin_addr, this->hp->h_length);
             this->local_address.sin_family = SOCKET_TYPE;
+            this->local_address.sin_port = htons(port);
 
             if ((this->sock_listen = socket(SOCKET_TYPE, SOCK_STREAM, 0)) < 0) {
                 error("Unable to open socket (server)");
@@ -61,21 +66,12 @@ class serverSocket {
             }
         }
 
-        // function
-        // void stabilizeConnection(char* buf) {
-        //     socklen_t i;
-
-        //     listen(this->sock_listen, QUEUE_SIZE);
-        //     while(1) {
-        //         i = sizeof(local_address);
-        //         if ((this->sock_attends = accept(this->sock_listen, (struct sockaddr *) &this->client_address, &i)) < 0) {
-        //             error("Unable to establish a connection");
-        //         }
-        //         read(this->sock_attends, this->buffer, BUFSIZ);
-        //         memcpy(buf, &buffer, BUFSIZ);
-        //         close(sock_attends);
-        //     }
-        // }
+        void listenForConnection() {
+            if(listen(this->sock_listen, QUEUE_SIZE) < 0) {
+                error("Unable to listen on socket");
+            }
+            cerr << "Server listening on port " << ntohs(local_address.sin_port) << endl;
+        }
 };
 
 class clientSocket {
@@ -83,7 +79,7 @@ class clientSocket {
         int sock_fd;
         struct sockaddr_in server_address;
         struct hostent *hp;
-        char buffer[BUFSIZ + 1];
+        char buffer[BUFFER_SIZE + 1];
         char *host;
 
         void error(const string& msg) const {
@@ -96,6 +92,7 @@ class clientSocket {
         clientSocket(): sock_fd(0), hp(nullptr), host(nullptr) {}
 
         ~clientSocket() {
+            close(sock_fd);
             exit(EXIT_SUCCESS);
         }
 
@@ -116,8 +113,6 @@ class clientSocket {
                 error("Unable to connect to server");
             }
         }
-
-        // Remenber write 
 };
 
 #endif
