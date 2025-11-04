@@ -43,32 +43,34 @@ class LinkedList {
         }
 
         void clear() {
-            Node* current = head;
+            Node* current = this->head;
             while (current != nullptr) {
                 Node* next = current->next;
                 delete current;
                 current = next;
             }
-            head = tail = nullptr;
-            listSize = 0;
-            currentIdx = 0;
+            this->head = nullptr;
+            this->tail = nullptr;
+            this->listSize = 0;
+            this->currentIdx = 0;
         }
 // ==========================================================================
 
         // insert element
         void insert(const T& newElement) {
-            Node* newNode = new Node(newElement, nullptr, tail, currentIdx++);
-            if (tail == nullptr) {
-                head = tail = newNode;
+            Node* newNode = new Node(newElement, nullptr, this->tail, currentIdx++);
+            if (this->tail == nullptr) {
+                this->head = newNode;
+                this->tail = newNode;
             } else {
-                tail->next = newNode;
-                tail = newNode;
+                this->tail->next = newNode;
+                this->tail = newNode;
             }
-            listSize++;
+            this->listSize++;
         }
         
         const T& accessWithIdx(size_t index) {
-            Node* current = head;
+            Node* current = this->head;
             while (current != nullptr) {
                 if (current->index == index) {
                     return current->element;
@@ -76,35 +78,35 @@ class LinkedList {
                 current = current->next;
             }
             error("Element not found at index: " + to_string(index));
-            return head->element;
+            return this->head->element;
         }
 
         const T& getLastElement() const {
             if (isEmpty()) {
                 error("Cannot get last block from LinkedList");
             }
-            return tail->element;
+            return this->tail->element;
         }
 
         const T& getFirstElement() const {
             if (isEmpty()) {
                 error("Cannot get last block from LinkedList");
             }
-            return head->element;
+            return this->head->element;
         }
 
         size_t size() const {
-            return listSize;
+            return this->listSize;
         }
 
         bool isEmpty() const {
-            return listSize == 0;
+            return this->listSize == 0;
         }
 
 // ==========================================================================
         void print() const {
-            Node* current = head;
-            cout << "Lista (Size " << listSize << "): " << endl;
+            Node* current = this->head;
+            cout << "Lista (Size " << this->listSize << "): " << endl;
             cout << "================================" << endl;
             while (current != nullptr) {
                 cout << "Element #" << current->index << "|";
