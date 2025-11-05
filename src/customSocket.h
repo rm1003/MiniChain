@@ -110,7 +110,7 @@ class serverSocket : public customSocket {
             this->local_address.sin_family = SOCKET_TYPE;
             this->local_address.sin_port = htons(port);
 
-            this->local_address.sin_addr.s_addr = INADDR_ANY;
+            // this->local_address.sin_addr.s_addr = INADDR_ANY;
 
             if ((this->sock_listen = socket(SOCKET_TYPE, SOCK_STREAM, 0)) < 0) {
                 error("Unable to open socket (server)");
