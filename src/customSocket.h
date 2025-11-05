@@ -20,11 +20,65 @@ using namespace std;
 #define BUFFER_SIZE     8192
 
 
-class serverSocket {
+class customSocket {
+    private:
+        char buffer[BUFFER_SIZE + 1]; //tam = 8192 + 1
+
+        void error(const string& msg) const {
+            cerr << "Error in customSocket: " << msg << endl;
+            exit(EXIT_FAILURE);
+        }
+
+    protected:
+        int sock_fd;
+
+    public:
+        customSocket(): sock_fd(0) {
+            memset(this->buffer, 0, BUFFER_SIZE + 1);
+        }
+
+        ~customSocket() {
+            if (this->sock_fd > 0) close(this->sock_fd);
+        }
+        
+        // send data
+        bool sendData(const string& data) {
+            if (this->sock_fd <= 0) {
+                error("No connection for sending data");
+            }
+
+            int sents = write(this->sock_fd, data.c_str(), data.length());
+            if (sents < 0) {
+                cerr << "Error sending data" << endl;
+                return false;
+            }
+
+            return true;
+        }
+        
+        string receiveData() {
+            if (this->sock_fd <= 0) {
+                error("No connection for receiving data");
+            }
+
+            memset(this->buffer, 0, BUFFER_SIZE + 1);
+            int received = read(this->sock_fd, this->buffer, BUFFER_SIZE + 1);
+            if (received < 0) {
+                error("Error reading from socket");
+            }
+
+            return string(this->buffer, received);
+        }
+
+        bool isConnected() const {
+            return this->sock_fd > 0;
+        }
+};
+
+
+class serverSocket : public customSocket {
     private:
         int sock_listen;
-        int sock_attends;
-        char buffer[BUFFER_SIZE + 1]; //tam = 8192 + 1
         struct sockaddr_in local_address, client_address;
         struct hostent *hp;
         char localhost[MAX_HOSTNAME];
@@ -35,14 +89,13 @@ class serverSocket {
         }
  
     public:
-        serverSocket(): sock_listen(0), sock_attends(0), hp(nullptr) {
-            memset(buffer, 0, BUFFER_SIZE);
+        serverSocket(): customSocket(), sock_listen(0), hp(nullptr) {
+            memset(&this->local_address, 0, sizeof(this->local_address));
+            memset(&this->client_address, 0, sizeof(this->client_address));
         }
 
         ~serverSocket() {
-            if (this->sock_attends > 0) close(this->sock_attends);
             if (this->sock_listen > 0) close(this->sock_listen);
-            exit(EXIT_SUCCESS);
         }
 
         // init socket structs
@@ -57,6 +110,8 @@ class serverSocket {
             this->local_address.sin_family = SOCKET_TYPE;
             this->local_address.sin_port = htons(port);
 
+            this->local_address.sin_addr.s_addr = INADDR_ANY;
+
             if ((this->sock_listen = socket(SOCKET_TYPE, SOCK_STREAM, 0)) < 0) {
                 error("Unable to open socket (server)");
             }
@@ -70,17 +125,33 @@ class serverSocket {
             if(listen(this->sock_listen, QUEUE_SIZE) < 0) {
                 error("Unable to listen on socket");
             }
-            cerr << "Server listening on port " << ntohs(local_address.sin_port) << endl;
+            cout << "Server listening on port " << ntohs(this->local_address.sin_port) << endl;
+        }
+
+        bool acceptConnection() {
+            socklen_t client_length = sizeof(this->client_address);
+            sock_fd = accept(this->sock_listen, (struct sockaddr *) &this->client_address, &client_length);
+            
+            if (sock_fd <= 0) {
+                cerr << "Failed to accept connection" << endl;
+                return false;
+            }
+            cout << "Client connected: " << inet_ntoa(this->client_address.sin_addr) << ":" << ntohs(this->client_address.sin_port) << endl;
+            return true;
+        }
+
+        void closeConnection() {
+            if (sock_fd >= 0) {
+                close(sock_fd);
+                sock_fd = 0;
+            }
         }
 };
 
-class clientSocket {
+class clientSocket : public customSocket {
     private:
-        int sock_fd;
         struct sockaddr_in server_address;
         struct hostent *hp;
-        char buffer[BUFFER_SIZE + 1];
-        char *host;
 
         void error(const string& msg) const {
             cerr << "Error in clientSocket: " << msg << endl;
@@ -89,14 +160,11 @@ class clientSocket {
 
     public:
 
-        clientSocket(): sock_fd(0), hp(nullptr), host(nullptr) {}
+        clientSocket(): customSocket(), hp(nullptr) {}
 
-        ~clientSocket() {
-            close(sock_fd);
-            exit(EXIT_SUCCESS);
-        }
+        ~clientSocket() {}
 
-        void init(int port, char *server_name) {
+        void init(int port, const char *server_name) {
             if ((this->hp = gethostbyname(server_name)) == NULL) {
                 error("Unable to obtain server IP address");
             }
@@ -105,11 +173,11 @@ class clientSocket {
             this->server_address.sin_family = SOCKET_TYPE;
             this->server_address.sin_port = htons(port);
 
-            if ((this->sock_fd = socket(SOCKET_TYPE, SOCK_STREAM, 0)) < 0) {
+            if ((sock_fd = socket(SOCKET_TYPE, SOCK_STREAM, 0)) < 0) {
                 error("Unable to open socket (client)");
             }
 
-            if (connect(this->sock_fd, (struct sockaddr *) &this->server_address, sizeof(server_address)) < 0) {
+            if (connect(sock_fd, (struct sockaddr *) &this->server_address, sizeof(this->server_address)) < 0) {
                 error("Unable to connect to server");
             }
         }
