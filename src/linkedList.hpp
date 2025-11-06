@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <string>
 
+#define HASH_SIZE SHA256_DIGEST_LENGTH
+
 #define endl '\n'
 
 using namespace std;
@@ -12,20 +14,30 @@ using namespace std;
 template <typename T>
 class LinkedList {
     private:
-        struct Node {
-            const T element;
-            Node* next;
-            Node* prev;
-            size_t index;
+        enum TRANSATION_TYPE {
+            DEPOSIT = 0,
+            WITHDRAW = 1,
+            TRANSFER = 2
+        };
 
-            Node(const T& elem, Node* nxt = nullptr, Node* prv = nullptr, size_t idx = 0)
-                :element(elem), next(nxt), prev(prv), index(idx) {}
+        struct Transation {
+            TRANSATION_TYPE Type;
+            int client_id;
+            int valor;
+        };
+
+        struct Block {
+            unsigned char actual_hash[HASH_SIZE];
+            unsigned char prev_hash[HASH_SIZE];
+            Transation transation;
+            Block* next;
+
+            Block(const Block* nxt = nullptr): next(nxt) {}
         };
 
         Node* head;
         Node* tail;
         size_t listSize;
-        size_t currentIdx;
 
         void error(const string& msg) const {
             cerr << "Error in LinkedList: " << msg << endl;
@@ -36,29 +48,44 @@ class LinkedList {
     public:
 // ==========================================================================
         // constructor
-        LinkedList(): head(nullptr), tail(nullptr), listSize(0), currentIdx(0) {}
+        LinkedList(): head(nullptr), tail(nullptr), listSize(0) {}
 
         ~LinkedList() {
             clear();
         }
 
         void clear() {
-            Node* current = this->head;
+            Block* current = this->head;
             while (current != nullptr) {
-                Node* next = current->next;
+                Block* next = current->next;
                 delete current;
                 current = next;
             }
             this->head = nullptr;
             this->tail = nullptr;
             this->listSize = 0;
-            this->currentIdx = 0;
         }
 // ==========================================================================
 
+        // sha256 hash calc
+        string sha256(const string &str) {
+            unsigned char hash[HASH_SIZE];
+            SHA256_CTX sha256;
+            SHA256_Init(&sha256);
+            SHA256_Update(&sha256, str.c_str(), str.size());
+            SHA256_Final(hash, &sha256);
+            stringstream ss;
+            for (int i = 0; i < HASH_SIZE; ++i) {
+                ss << hex << setw(2) << setfill('0') << (int)hash[i];
+            }
+            return ss.str();
+        }
+
+
         // insert element
-        void insert(const T& newElement) {
-            Node* newNode = new Node(newElement, nullptr, this->tail, currentIdx++);
+        // @@@@ REFAZER
+        void insert(const Transation) {
+            Block* newNode = new Block(nullptr);
             if (this->tail == nullptr) {
                 this->head = newNode;
                 this->tail = newNode;
@@ -68,18 +95,6 @@ class LinkedList {
             }
             this->listSize++;
         }
-        
-        const T& accessWithIdx(size_t index) {
-            Node* current = this->head;
-            while (current != nullptr) {
-                if (current->index == index) {
-                    return current->element;
-                }
-                current = current->next;
-            }
-            error("Element not found at index: " + to_string(index));
-            return this->head->element;
-        }
 
         const T& getLastElement() const {
             if (isEmpty()) {
@@ -88,11 +103,11 @@ class LinkedList {
             return this->tail->element;
         }
 
-        const T& getFirstElement() const {
+        const Node& getFirstNode() const {
             if (isEmpty()) {
                 error("Cannot get last block from LinkedList");
             }
-            return this->head->element;
+            return this->head;
         }
 
         size_t size() const {
@@ -103,15 +118,25 @@ class LinkedList {
             return this->listSize == 0;
         }
 
+        const Node& iterator(const Node& node) {
+            if (node == nullptr)
+                return this->head;
+            return node->next;
+        }
+
+        const T& getElement(const Node* node) {
+            return node->element;
+        }
+
 // ==========================================================================
         void print() const {
+            int cnt = 0;
             Node* current = this->head;
             cout << "Lista (Size " << this->listSize << "): " << endl;
             cout << "================================" << endl;
             while (current != nullptr) {
-                cout << "Element #" << current->index << "|";
-                cout << "Prev: " << (current->prev ? to_string(current->prev->index) : "GENESIS");
-                cout << " | Next: " << (current->next ? to_string(current->next->index) : "END");
+                cout << "Element #" << cnt++ << "|";
+                cout << "Next: " << (current->next ? cnt : "END");
                 cout << endl;
 
                 cout << "Data: " << current->element << endl;
@@ -121,7 +146,6 @@ class LinkedList {
             }
             cout << endl;
         }
-
 };
 
 #endif

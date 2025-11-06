@@ -130,9 +130,9 @@ class serverSocket : public customSocket {
 
         bool acceptConnection() {
             socklen_t client_length = sizeof(this->client_address);
-            sock_fd = accept(this->sock_listen, (struct sockaddr *) &this->client_address, &client_length);
+            this->sock_fd = accept(this->sock_listen, (struct sockaddr *) &this->client_address, &client_length);
             
-            if (sock_fd <= 0) {
+            if (this->sock_fd <= 0) {
                 cerr << "Failed to accept connection" << endl;
                 return false;
             }
@@ -141,9 +141,9 @@ class serverSocket : public customSocket {
         }
 
         void closeConnection() {
-            if (sock_fd >= 0) {
-                close(sock_fd);
-                sock_fd = 0;
+            if (this->sock_fd >= 0) {
+                close(this->sock_fd);
+                this->sock_fd = 0;
             }
         }
 };
@@ -173,11 +173,11 @@ class clientSocket : public customSocket {
             this->server_address.sin_family = SOCKET_TYPE;
             this->server_address.sin_port = htons(port);
 
-            if ((sock_fd = socket(SOCKET_TYPE, SOCK_STREAM, 0)) < 0) {
+            if ((this->sock_fd = socket(SOCKET_TYPE, SOCK_STREAM, 0)) < 0) {
                 error("Unable to open socket (client)");
             }
 
-            if (connect(sock_fd, (struct sockaddr *) &this->server_address, sizeof(this->server_address)) < 0) {
+            if (connect(this->sock_fd, (struct sockaddr *) &this->server_address, sizeof(this->server_address)) < 0) {
                 error("Unable to connect to server");
             }
         }
