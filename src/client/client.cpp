@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     Message msg;
     ClientSocket *socket = new ClientSocket();
 
-    int porta = htons(atoi(argv[1]));
+    int porta = (atoi(argv[1]));
     char *host = argv[2];
     char *dados = argv[3];
 

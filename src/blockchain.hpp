@@ -24,8 +24,8 @@ typedef struct Transation {
 class Blockchain {
   private:
     struct Block {
-        unsigned char actual_hash[HASH_SIZE];
-        unsigned char prev_hash[HASH_SIZE];
+        string actual_hash;
+        string prev_hash;
         Transation transation;
         Block *next;
 
@@ -35,6 +35,7 @@ class Blockchain {
     Block *head;
     Block *tail;
     size_t listSize;
+    string (*ComputeHash)(const string data_to_hash);
 
     void error(const string &msg) const {
         cerr << "Error in Blockchain: " << msg << endl;
@@ -44,11 +45,15 @@ class Blockchain {
   public:
     // ==========================================================================
     // constructor
-    Blockchain() : head(nullptr), tail(nullptr), listSize(0) {}
+    Blockchain(string (*hashFunction)(const string data_to_hash))
+        : head(nullptr),
+          tail(nullptr),
+          listSize(0),
+          ComputeHash(hashFunction) {}
 
-    ~Blockchain() { clear(); }
+    ~Blockchain() { Clear(); }
 
-    void clear() {
+    void Clear() {
         Block *current = this->head;
         while (current != nullptr) {
             Block *next = current->next;
@@ -61,58 +66,72 @@ class Blockchain {
     }
     // ==========================================================================
 
-    // // sha256 hash calc
-    // string sha256(const string &str) {
-    //     unsigned char hash[HASH_SIZE];
-    //     SHA256_CTX sha256;
-    //     SHA256_Init(&sha256);
-    //     SHA256_Update(&sha256, str.c_str(), str.size());
-    //     SHA256_Final(hash, &sha256);
-    //     stringstream ss;
-    //     for (int i = 0; i < HASH_SIZE; ++i) {
-    //         ss << hex << setw(2) << setfill('0') << (unsigned int)hash[i];
-    //     }
-    //     return ss.str();
-    // }
+    size_t Size() const { return this->listSize; }
 
-    // insert element
-    void insert(const Transation &tr) {
-        Block *newNode = new Block(nullptr);
-        newNode->transation = tr;
+    bool IsEmpty() const { return this->listSize == 0; }
+
+    void Insert(const Transation &tr) {
+        string data_to_hash;
+
+        Block *newBlock = new Block(nullptr);
+        newBlock->prev_hash =
+            (this->tail != nullptr) ? this->tail->actual_hash : "Primeiro Hash";
+        newBlock->transation = tr;
+
+        data_to_hash = newBlock->prev_hash;
+        data_to_hash += newBlock->transation.client_id;
+        data_to_hash += newBlock->transation.value;
+        data_to_hash += newBlock->transation.type;
+
+        newBlock->actual_hash = ComputeHash(data_to_hash);
+
         if (this->tail == nullptr) {
-            this->head = newNode;
-            this->tail = newNode;
+            this->head = newBlock;
+            this->tail = newBlock;
         } else {
-            this->tail->next = newNode;
-            this->tail = newNode;
+            this->tail->next = newBlock;
+            this->tail = newBlock;
         }
         this->listSize++;
     }
 
-    const Block &getLastElement() const {
-        if (isEmpty()) {
+    const Block &GetLastElement() const {
+        if (IsEmpty()) {
             error("Cannot get last block from Blockchain");
         }
         return *this->tail;
     }
 
     const Block *getFirstNode() const {
-        if (isEmpty()) {
+        if (IsEmpty()) {
             error("Cannot get first block from Blockchain");
         }
         return this->head;
     }
 
-    size_t size() const { return this->listSize; }
+    bool CheckHash(Block *block) {
+        string verify = block->prev_hash;
+        verify += block->transation.client_id;
+        verify += block->transation.value;
+        verify += block->transation.type;
 
-    bool isEmpty() const { return this->listSize == 0; }
+        string hash = this->ComputeHash(verify);
 
-    Block *iterator(Block *node) {
-        if (node == nullptr) return this->head;
-        return node->next;
+        if (hash != block->actual_hash) return false;
+
+        return true;
     }
 
-    const Transation &getElement(const Block *node) { return node->transation; }
+    bool VerifyBlockchainIntegrity() {
+        Block *current = this->head;
+
+        while (current != nullptr) {
+            if (!(CheckHash(current))) return false;
+            current = current->next;
+        }
+
+        return true;
+    }
 
     // ==========================================================================
     void print() const {

@@ -9,23 +9,34 @@
 
 using namespace std;
 
+string hashF(const string data_to_hash) { return data_to_hash; };
+
 int main(int argc, char *argv[]) {
-    Message message;
-    ServerSocket *socket = new ServerSocket();
+    Blockchain *blockchain = new Blockchain(&hashF);
 
-    socket->init(htons(atoi(argv[1])));
+    Transation tr;
 
-    socket->listenForConnection();
+    tr.client_id = 1;
+    tr.value = 100;
+    tr.type = DEPOSIT;
 
-    while (1) {
-        socket->acceptConnection();
-        memset(message.buffer, 0, sizeof(message.buffer));
-        socket->receiveData(message);
-        printf("%s\n", message.buffer);
-        socket->closeConnection();
+    blockchain->Insert(tr);
+
+    tr.client_id = 3;
+    tr.value = 50;
+    tr.type = WITHDRAW;
+
+    blockchain->Insert(tr);
+
+    blockchain->print();
+
+    if (blockchain->VerifyBlockchainIntegrity()) {
+        cout << "OK\n";
+    } else {
+        cout << "PROBLEM!\n";
     }
 
-    delete socket;
+    delete blockchain;
 
     return 0;
 }
