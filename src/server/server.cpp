@@ -1,4 +1,8 @@
+#include <netinet/in.h>
 #include <openssl/sha.h>
+
+#include <cstdio>
+#include <cstring>
 
 #include "../blockchain.hpp"
 #include "../customSocket.hpp"
@@ -6,27 +10,22 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    Blockchain *blockchain = new Blockchain();
+    Message message;
+    ServerSocket *socket = new ServerSocket();
 
-    blockchain->print();
+    socket->init(htons(atoi(argv[1])));
 
-    Transation tr;
+    socket->listenForConnection();
 
-    tr.client_id = 1;
-    tr.type = WITHDRAW;
-    tr.value = 1500;
+    while (1) {
+        socket->acceptConnection();
+        memset(message.buffer, 0, sizeof(message.buffer));
+        socket->receiveData(message);
+        printf("%s\n", message.buffer);
+        socket->closeConnection();
+    }
 
-    blockchain->insert(tr);
-
-    tr.client_id = 2;
-    tr.type = DEPOSIT;
-    tr.value = 2000;
-
-    blockchain->insert(tr);
-
-    blockchain->print();
-
-    delete blockchain;
+    delete socket;
 
     return 0;
 }
