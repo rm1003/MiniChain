@@ -19,17 +19,18 @@ using namespace std;
 
 #define MAX_HOSTNAME 64
 #define QUEUE_SIZE 5
+#define MAX_USERWORD 20
 
 enum MESSAGE_TYPE { EMPTY, LOGIN, TRANSATION };
 enum MS_TRANSATION_TYPE { MS_NONE, MS_DEPOSIT, MS_WITHDRAW };
 enum MS_LOGIN_TYPE { MS_REQUEST, MS_VALID, MS_INVALID };
 
 typedef struct Message {
-    long int client_id;
+    unsigned long int client_id;
     union {
         struct login {
-            char username[21];
-            char password[21];
+            char username[MAX_USERWORD + 1];
+            char password[MAX_USERWORD + 1];
             MS_LOGIN_TYPE login_type;
         } login;
 
