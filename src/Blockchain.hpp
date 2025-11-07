@@ -13,12 +13,12 @@
 
 using namespace std;
 
-enum TRANSATION_TYPE { DEPOSIT = 0, WITHDRAW = 1 };
+enum TRANSATION_TYPE { NONE, DEPOSIT, WITHDRAW };
 
 typedef struct Transation {
-    TRANSATION_TYPE type;
     long int client_id;
     long int value;
+    TRANSATION_TYPE type;
 } Transation;
 
 class Blockchain {

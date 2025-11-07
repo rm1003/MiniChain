@@ -4,39 +4,28 @@
 #include <cstdio>
 #include <cstring>
 
-#include "../blockchain.hpp"
-#include "../customSocket.hpp"
+#include "../Blockchain.hpp"
+#include "../CustomSocket.hpp"
 
 using namespace std;
 
 string hashF(const string data_to_hash) { return data_to_hash; };
 
 int main(int argc, char *argv[]) {
-    Blockchain *blockchain = new Blockchain(&hashF);
+    Message message;
 
-    Transation tr;
+    ServerSocket *socket = new ServerSocket();
 
-    tr.client_id = 1;
-    tr.value = 100;
-    tr.type = DEPOSIT;
+    socket->init(atoi(argv[1]));
+    socket->listenForConnection();
 
-    blockchain->Insert(tr);
-
-    tr.client_id = 3;
-    tr.value = 50;
-    tr.type = WITHDRAW;
-
-    blockchain->Insert(tr);
-
-    blockchain->print();
-
-    if (blockchain->VerifyBlockchainIntegrity()) {
-        cout << "OK\n";
-    } else {
-        cout << "PROBLEM!\n";
+    while (1) {
+        socket->acceptConnection();
+        socket->receiveData(message);
+        socket->closeConnection();
     }
 
-    delete blockchain;
+    delete socket;
 
     return 0;
 }

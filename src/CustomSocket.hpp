@@ -19,10 +19,27 @@ using namespace std;
 
 #define MAX_HOSTNAME 64
 #define QUEUE_SIZE 5
-#define BUFFER_SIZE 8192
+
+enum MESSAGE_TYPE { EMPTY, LOGIN, TRANSATION };
+enum MS_TRANSATION_TYPE { MS_NONE, MS_DEPOSIT, MS_WITHDRAW };
+enum MS_LOGIN_TYPE { MS_REQUEST, MS_VALID, MS_INVALID };
 
 typedef struct Message {
-    unsigned char buffer[1024];
+    long int client_id;
+    union {
+        struct login {
+            char username[21];
+            char password[21];
+            MS_LOGIN_TYPE login_type;
+        } login;
+
+        struct transation {
+            long int value;
+            MS_TRANSATION_TYPE transation_type;
+        } transation;
+
+    } data;
+    MESSAGE_TYPE message_type;
 } Message;
 
 template <typename T>
@@ -193,15 +210,28 @@ class ClientSocket : public CustomSocket<Message> {
               this->hp->h_length);
         this->server_address.sin_family = SOCKET_TYPE;
         this->server_address.sin_port = htons(port);
+    }
 
-        if ((this->sock_fd = socket(SOCKET_TYPE, SOCK_STREAM, 0)) < 0) {
-            error("Unable to open socket (client)");
+    bool Connect() {
+        if (this->sock_fd >= 0) {
+            close(this->sock_fd);
+            this->sock_fd = -1;
+        }
+
+        this->sock_fd = socket(SOCKET_TYPE, SOCK_STREAM, 0);
+        if (this->sock_fd < 0) {
+            cerr << "Unable to open socket (client)" << endl;
+            return false;
         }
 
         if (connect(this->sock_fd, (struct sockaddr *)&this->server_address,
                     sizeof(this->server_address)) < 0) {
-            error("Unable to connect to server");
+            cerr << "Unable to connect to server" << endl;
+            close(this->sock_fd);
+            this->sock_fd = -1;
+            return false;
         }
+        return true;
     }
 };
 
