@@ -4,8 +4,8 @@
 #include <cstdio>
 #include <cstring>
 
-#include "../blockchain.hpp"
-#include "../customSocket.hpp"
+#include "../Blockchain.hpp"
+#include "../CustomSocket.hpp"
 
 using namespace std;
 
