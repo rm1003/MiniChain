@@ -13,11 +13,11 @@
 
 using namespace std;
 
-enum TRANSATION_TYPE { NONE, DEPOSIT, WITHDRAW };
+enum TRANSATION_TYPE { NONE, DEPOSIT, WITHDRAW, CHECK };
 
 typedef struct Transation {
     long int client_id;
-    long int value;
+    double value;
     TRANSATION_TYPE type;
 } Transation;
 
@@ -40,6 +40,19 @@ class Blockchain {
     void error(const string &msg) const {
         cerr << "Error in Blockchain: " << msg << endl;
         exit(EXIT_FAILURE);
+    }
+
+    bool CheckHash(Block *block) {
+        string verify = block->prev_hash;
+        verify += block->transation.client_id;
+        verify += block->transation.value;
+        verify += block->transation.type;
+
+        string hash = this->ComputeHash(verify);
+
+        if (hash != block->actual_hash) return false;
+
+        return true;
     }
 
   public:
@@ -109,18 +122,7 @@ class Blockchain {
         return this->head;
     }
 
-    bool CheckHash(Block *block) {
-        string verify = block->prev_hash;
-        verify += block->transation.client_id;
-        verify += block->transation.value;
-        verify += block->transation.type;
-
-        string hash = this->ComputeHash(verify);
-
-        if (hash != block->actual_hash) return false;
-
-        return true;
-    }
+    long int GetUserBalance(unsigned long int id) { return 0; }
 
     bool VerifyBlockchainIntegrity() {
         Block *current = this->head;

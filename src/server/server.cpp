@@ -18,7 +18,9 @@ typedef struct user {
 
 vector<user> users;
 
-string hashF(const string data_to_hash) {
+Blockchain *blockchain;
+
+string hashFunction(const string data_to_hash) {
     string rev = data_to_hash;
     rev += 5;
     reverse(rev.begin(), rev.end());
@@ -37,7 +39,7 @@ void authenticate(Message *msg) {
     }
 
     if (found) {
-        if (hashF(msg->data.login.password) == users[i].password) {
+        if (hashFunction(msg->data.login.password) == users[i].password) {
             msg->data.login.login_type = MS_VALID;
             msg->client_id = i;
         } else {
@@ -47,16 +49,31 @@ void authenticate(Message *msg) {
     } else {
         user new_user;
         new_user.username = msg->data.login.username;
-        new_user.password = hashF(msg->data.login.password);
+        new_user.password = hashFunction(msg->data.login.password);
         users.push_back(new_user);
         msg->data.login.login_type = MS_VALID;
         msg->client_id = users.size() - 1;
     }
 }
 
+void transation(Message *msg) {}
+
+void query(Message *msg) {
+    double balance;
+    unsigned long int client_id = msg->client_id;
+
+    balance = blockchain->GetUserBalance(client_id);
+
+    msg->data.balance = balance;
+}
+
 void handler(Message *msg) {
     if (msg->message_type == LOGIN) {
         authenticate(msg);
+    } else if (msg->message_type == TRANSATION) {
+        transation(msg);
+    } else {
+        query(msg);
     }
 }
 
@@ -65,6 +82,12 @@ int main(int argc, char *argv[]) {
 
     memset(&msg, 0, sizeof(msg));
 
+    if (argc != 2) {
+        printf("Uso correto: %s <porta>\n", argv[1]);
+        return 1;
+    }
+
+    blockchain = new Blockchain(&hashFunction);
     ServerSocket *socket = new ServerSocket();
 
     socket->init(atoi(argv[1]));
@@ -79,6 +102,7 @@ int main(int argc, char *argv[]) {
     }
 
     delete socket;
+    delete blockchain;
 
     return 0;
 }
