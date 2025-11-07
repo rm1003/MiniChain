@@ -26,10 +26,10 @@ typedef struct Message {
 } Message;
 
 template <typename T>
-class customSocket {
+class CustomSocket {
   private:
     void error(const string &msg) const {
-        cerr << "Error in customSocket: " << msg << endl;
+        cerr << "Error in CustomSocket: " << msg << endl;
         exit(EXIT_FAILURE);
     }
 
@@ -37,9 +37,9 @@ class customSocket {
     int sock_fd;
 
   public:
-    customSocket() : sock_fd(-1) {}
+    CustomSocket() : sock_fd(-1) {}
 
-    ~customSocket() {
+    ~CustomSocket() {
         if (this->sock_fd >= 0) close(this->sock_fd);
     }
 
@@ -92,7 +92,7 @@ class customSocket {
     bool isConnected() const { return this->sock_fd >= 0; }
 };
 
-class ServerSocket : public customSocket<Message> {
+class ServerSocket : public CustomSocket<Message> {
   private:
     int sock_listen;
     struct sockaddr_in local_address, client_address;
@@ -105,7 +105,7 @@ class ServerSocket : public customSocket<Message> {
     }
 
   public:
-    ServerSocket() : customSocket(), sock_listen(0), hp(nullptr) {
+    ServerSocket() : CustomSocket(), sock_listen(0), hp(nullptr) {
         memset(&this->local_address, 0, sizeof(this->local_address));
         memset(&this->client_address, 0, sizeof(this->client_address));
     }
@@ -169,7 +169,7 @@ class ServerSocket : public customSocket<Message> {
     }
 };
 
-class ClientSocket : public customSocket<Message> {
+class ClientSocket : public CustomSocket<Message> {
   private:
     struct sockaddr_in server_address;
     struct hostent *hp;
@@ -180,7 +180,7 @@ class ClientSocket : public customSocket<Message> {
     }
 
   public:
-    ClientSocket() : customSocket(), hp(nullptr) {}
+    ClientSocket() : CustomSocket(), hp(nullptr) {}
 
     ~ClientSocket() {}
 
