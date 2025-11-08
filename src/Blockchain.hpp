@@ -1,13 +1,9 @@
 #ifndef Blockchain_H
 #define Blockchain_H
 
-#include <openssl/sha.h>
-
 #include <cstdlib>
 #include <iostream>
 #include <string>
-
-#define HASH_SIZE SHA256_DIGEST_LENGTH
 
 #define endl '\n'
 
@@ -16,7 +12,7 @@ using namespace std;
 enum TRANSATION_TYPE { NONE, DEPOSIT, WITHDRAW, CHECK };
 
 typedef struct Transation {
-    long int client_id;
+    unsigned long int client_id;
     double value;
     TRANSATION_TYPE type;
 } Transation;
@@ -38,7 +34,7 @@ class Blockchain {
     string (*ComputeHash)(const string data_to_hash);
 
     void error(const string &msg) const {
-        cerr << "Error in Blockchain: " << msg << endl;
+        cerr << "Erro na Blockchain: " << msg << endl;
         exit(EXIT_FAILURE);
     }
 
@@ -83,46 +79,77 @@ class Blockchain {
 
     bool IsEmpty() const { return this->listSize == 0; }
 
-    void Insert(const Transation &tr) {
+    bool Insert(const Transation &tr) {
+        double balance;
         string data_to_hash;
 
-        Block *newBlock = new Block(nullptr);
-        newBlock->prev_hash =
-            (this->tail != nullptr) ? this->tail->actual_hash : "Primeiro Hash";
-        newBlock->transation = tr;
+        if (tr.type == WITHDRAW) {
+            if (this->GetUserBalance(tr.client_id, &balance)) {
+                if (balance - tr.value < 0) {
+                    return false;
+                }
+            }
+        }
 
-        data_to_hash = newBlock->prev_hash;
-        data_to_hash += newBlock->transation.client_id;
-        data_to_hash += newBlock->transation.value;
-        data_to_hash += newBlock->transation.type;
+        Block *new_block = new Block(nullptr);
+        new_block->prev_hash = (this->tail != nullptr)
+                                   ? this->tail->actual_hash
+                                   : ComputeHash("BLOCKCHAIN_GENESIS");
+        new_block->transation = tr;
 
-        newBlock->actual_hash = ComputeHash(data_to_hash);
+        data_to_hash = new_block->prev_hash;
+        data_to_hash += new_block->transation.client_id;
+        data_to_hash += new_block->transation.value;
+        data_to_hash += new_block->transation.type;
+
+        new_block->actual_hash = ComputeHash(data_to_hash);
 
         if (this->tail == nullptr) {
-            this->head = newBlock;
-            this->tail = newBlock;
+            this->head = new_block;
+            this->tail = new_block;
         } else {
-            this->tail->next = newBlock;
-            this->tail = newBlock;
+            this->tail->next = new_block;
+            this->tail = new_block;
         }
         this->listSize++;
-    }
 
-    const Block &GetLastElement() const {
-        if (IsEmpty()) {
-            error("Cannot get last block from Blockchain");
-        }
-        return *this->tail;
+        return true;
     }
 
     const Block *getFirstNode() const {
         if (IsEmpty()) {
-            error("Cannot get first block from Blockchain");
+            error("Nao foi possivel obter o primeiro bloco da Blockchain");
         }
         return this->head;
     }
 
-    long int GetUserBalance(unsigned long int id) { return 0; }
+    const Block &GetLastElement() const {
+        if (IsEmpty()) {
+            error("Nao foi possivel obter o ultimo bloco da Blockchain");
+        }
+        return *this->tail;
+    }
+
+    bool GetUserBalance(unsigned long int id, double *balance) {
+        double s = 0.0;
+        Block *current = this->head;
+
+        while (current != nullptr) {
+            if (!(CheckHash(current))) return false;
+            if (current->transation.client_id == id) {
+                if (current->transation.type == DEPOSIT) {
+                    s += current->transation.value;
+                } else if (current->transation.type == WITHDRAW) {
+                    s -= current->transation.value;
+                }
+            }
+            current = current->next;
+        }
+
+        (*balance) = s;
+
+        return true;
+    }
 
     bool VerifyBlockchainIntegrity() {
         Block *current = this->head;
@@ -139,14 +166,14 @@ class Blockchain {
     void print() const {
         int cnt = 0;
         Block *current = this->head;
-        cout << "Lista (Size " << this->listSize << "): " << endl;
+        cout << "Lista (Tamanho " << this->listSize << "): " << endl;
         cout << "================================" << endl;
         while (current != nullptr) {
-            cout << "Element #" << cnt++ << " | ";
-            cout << "Next: " << (current->next ? "PRESENT" : "END") << endl;
+            cout << "Elemento #" << cnt++ << " | ";
+            cout << "Prox: " << (current->next ? "PRESENTE" : "FIM") << endl;
 
-            cout << "Transaction: Type=" << current->transation.type
-                 << " ClientID=" << current->transation.client_id
+            cout << "Transacao: Tipo=" << current->transation.type
+                 << " ClienteID=" << current->transation.client_id
                  << " Valor=" << current->transation.value << endl;
             cout << "----------------------------------" << endl;
 

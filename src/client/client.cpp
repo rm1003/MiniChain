@@ -1,6 +1,5 @@
 #include <unistd.h>
 
-#include <algorithm>
 #include <cstdio>
 #include <cstring>
 
@@ -80,7 +79,6 @@ int main(int argc, char *argv[]) {
     op = 1;
     msg.client_id = id;
     while (op != 0) {
-        printf("\n\n");
         printf("Operações Disponíveis:\n");
         printf("    0 - Encerrar programa\n");
         printf("    1 - Depositar\n");
@@ -103,6 +101,13 @@ int main(int argc, char *argv[]) {
                 socket->sendData(msg);
                 socket->receiveData(msg);
 
+                if (msg.message_type == OK) {
+                    printf("Depósito de %lf MC realizado com sucesso!\n",
+                           value);
+                } else {
+                    printf("Falha ao realizar depósito\n");
+                }
+
                 break;
             case 2:
                 printf("Insira o valor para retirar: ");
@@ -114,6 +119,13 @@ int main(int argc, char *argv[]) {
                 socket->sendData(msg);
                 socket->receiveData(msg);
 
+                if (msg.message_type == OK) {
+                    printf("Retirada de %lf MC realizada com sucesso!\n",
+                           value);
+                } else {
+                    printf("Falha ao realizar retirada\n");
+                }
+
                 break;
             case 3:
                 msg.message_type = QUERY;
@@ -122,11 +134,19 @@ int main(int argc, char *argv[]) {
                 socket->sendData(msg);
                 socket->receiveData(msg);
 
+                if (msg.message_type == OK) {
+                    printf("Saldo corrente: %lf MC\n", msg.data.balance);
+                } else {
+                    printf("Falha ao consultar saldo\n");
+                }
+
                 break;
 
             default:
                 printf("Insira uma operação válida...\n");
         }
+        printf("\n\n");
+        sleep(2);
     }
 
     delete socket;
