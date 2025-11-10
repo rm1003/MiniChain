@@ -1,6 +1,7 @@
 # Compilador e flags
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -O0 -g
+LDFLAGS = -lcryptopp
 
 # Diretórios
 SRC_DIR = src
@@ -18,7 +19,7 @@ CLT_BIN = client
 all: $(SRV_BIN) $(CLT_BIN)
 
 $(SRV_BIN): $(SRV_SRC)
-	$(CXX) $(CXXFLAGS) -I$(INC) $^ -o $@
+	$(CXX) $(CXXFLAGS) -I$(INC) $^ -o $@ $(LDFLAGS)
 
 $(CLT_BIN): $(CLT_SRC)
 	$(CXX) $(CXXFLAGS) -I$(INC) $^ -o $@

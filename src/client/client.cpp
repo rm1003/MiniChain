@@ -29,8 +29,7 @@ int main(int argc, char *argv[]) {
     memset(&msg, 0, sizeof(msg));
 
     if (argc != 5) {
-        printf("Uso correto: %s <porta> <nome-servidor> <username> <senha>",
-               argv[0]);
+        cout << "Uso correto: " << argv[0] << " <porta> <nome-servidor> <username> <senha>\n";
 
         return 0;
     }
@@ -61,15 +60,15 @@ int main(int argc, char *argv[]) {
     socket->sendData(msg);
     socket->receiveData(msg);
 
-    printf("Cliente MiniCoin\n");
+    cout << "Cliente MiniCoin\n";
 
     // Login do Cliente
     if (msg.message_type == LOGIN) {
         if (msg.data.login.login_type == MS_VALID) {
-            printf("Autenticação bem sucedida!\n");
+            cout << "Autenticação bem sucedida!\n";
             id = msg.client_id;
         } else if (msg.data.login.login_type == MS_INVALID) {
-            printf("Falha na Autenticação\nUsuário ou Senha incorretos\n");
+            cout << "Falha na Autenticação\nUsuário ou Senha incorretos\n";
             delete socket;
 
             return 1;
@@ -79,21 +78,21 @@ int main(int argc, char *argv[]) {
     op = 1;
     msg.client_id = id;
     while (op != 0) {
-        printf("Operações Disponíveis:\n");
-        printf("    0 - Encerrar programa\n");
-        printf("    1 - Depositar\n");
-        printf("    2 - Retirar\n");
-        printf("    3 - Consultar saldo\n");
-        printf("Insira uma operação: ");
-        scanf("%d", &op);
+        cout << "Operações Disponíveis:\n";
+        cout << "    0 - Encerrar programa\n";
+        cout << "    1 - Depositar\n";
+        cout << "    2 - Retirar\n";
+        cout << "    3 - Consultar saldo\n";
+        cout << "Insira uma operação: ";
+        cin >> op;
 
         switch (op) {
             case 0:
-                printf("Encerrando Cliente Minicoin\n");
+                cout << "Encerrando Cliente Minicoin\n";
                 break;
             case 1:
-                printf("Insira o valor para depositar: ");
-                scanf("%lf", &value);
+                cout << "Insira o valor para depositar: ";
+                cin >> value;
                 msg.message_type = TRANSATION;
                 msg.data.transation.transation_type = MS_DEPOSIT;
                 msg.data.transation.value = value;
@@ -102,16 +101,15 @@ int main(int argc, char *argv[]) {
                 socket->receiveData(msg);
 
                 if (msg.message_type == OK) {
-                    printf("Depósito de %lf MC realizado com sucesso!\n",
-                           value);
+                    cout << "Depósito de " << value << " MC realizado com sucesso!\n";
                 } else {
-                    printf("Falha ao realizar depósito\n");
+                    cout << "Falha ao realizar depósito\n";
                 }
 
                 break;
             case 2:
-                printf("Insira o valor para retirar: ");
-                scanf("%lf", &value);
+                cout << "Insira o valor para retirar: ";
+                cin >> value;
                 msg.message_type = TRANSATION;
                 msg.data.transation.transation_type = MS_WITHDRAW;
                 msg.data.transation.value = value;
@@ -120,10 +118,9 @@ int main(int argc, char *argv[]) {
                 socket->receiveData(msg);
 
                 if (msg.message_type == OK) {
-                    printf("Retirada de %lf MC realizada com sucesso!\n",
-                           value);
+                    cout << "Retirada de " << value << " MC realizada com sucesso!\n";
                 } else {
-                    printf("Falha ao realizar retirada\n");
+                    cout << "Falha ao realizar retirada\n";
                 }
 
                 break;
@@ -135,17 +132,17 @@ int main(int argc, char *argv[]) {
                 socket->receiveData(msg);
 
                 if (msg.message_type == OK) {
-                    printf("Saldo corrente: %lf MC\n", msg.data.balance);
+                    cout << "Saldo corrente: " << msg.data.balance << " MC\n";
                 } else {
-                    printf("Falha ao consultar saldo\n");
+                    cout << "Falha ao consultar saldo\n";
                 }
 
                 break;
 
             default:
-                printf("Insira uma operação válida...\n");
+                cout << "Insira uma operação válida...\n";
         }
-        printf("\n\n");
+        cout << "\n\n";
         sleep(2);
     }
 

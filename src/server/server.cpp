@@ -1,5 +1,7 @@
 #include <netinet/in.h>
-#include <openssl/sha.h>
+#include <cryptopp/sha.h>
+#include <cryptopp/hex.h>
+#include <cryptopp/filters.h>
 #include <signal.h>
 
 #include <algorithm>
@@ -23,24 +25,35 @@ ServerSocket *s_socket;
 Blockchain *blockchain;
 
 void finish(int s) {
-    printf("\nEncerrando servidor...\n");
+    cout << "\nEncerrando servidor...\n";
     delete s_socket;
     delete blockchain;
     exit(s);
 }
 
 string hashFunction(const string data_to_hash) {
-    string rev = data_to_hash;
-    rev += 5;
-    reverse(rev.begin(), rev.end());
-    return rev;
+    CryptoPP::SHA256 hash;
+    string result;
+
+    CryptoPP::StringSource tmp(
+        data_to_hash,
+        true,                                       // flag de processamento total
+        new CryptoPP::HashFilter(                   // filtro (alg. cripto)
+            hash,                                   // tipo de cripto
+            new CryptoPP::HexEncoder(               // converte de bin em hexa
+                new CryptoPP::StringSink(result)    // guarda resultado em result
+            )
+        )
+    );
+
+    return result;
 };
 
 void authenticate(Message *msg) {
     unsigned long int i;
     bool found = false;
 
-    printf("Tentativa de %s de autenticar...\n", msg->data.login.username);
+    cout << "Tentativa de " << msg->data.login.username << " de autenticar...\n";
     for (i = 0; i < users.size(); ++i) {
         if (msg->data.login.username == users[i].username) {
             found = true;
@@ -52,11 +65,11 @@ void authenticate(Message *msg) {
         if (hashFunction(msg->data.login.password) == users[i].password) {
             msg->data.login.login_type = MS_VALID;
             msg->client_id = i;
-            printf("Usuário autenticado.\n");
+            cout << "Usuário autenticado.\n";
         } else {
             msg->data.login.login_type = MS_INVALID;
             msg->client_id = i;
-            printf("Senha incorreta.\n");
+            cout << "Senha incorreta.\n";
         }
     } else {
         user new_user;
@@ -65,7 +78,7 @@ void authenticate(Message *msg) {
         users.push_back(new_user);
         msg->data.login.login_type = MS_VALID;
         msg->client_id = users.size() - 1;
-        printf("Novo usuário criado e autenticado | ID: %lu\n", msg->client_id);
+        cout << "Novo usuário criado e autenticado | ID: " << msg->client_id << '\n';
     }
 }
 
@@ -92,11 +105,10 @@ void transation(Message *msg) {
         op = "RETIRADA";
     }
 
-    printf(
-        "Cliente %s [%lu] realizou uma ação de %s no valor de %lf MC | Código: "
-        "%s\n",
-        users[client_id].username.c_str(), client_id, op.c_str(), value,
-        (msg->message_type == OK) ? "OK" : "ERRO");
+    cout <<
+        "Cliente " << users[client_id].username.c_str() << " [" << client_id << "]" << " realizou uma ação de " 
+        << op.c_str() << " no valor de " << value << " MC | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO") << 
+        '\n';
 }
 
 void query(Message *msg) {
@@ -110,11 +122,10 @@ void query(Message *msg) {
         msg->message_type = ERROR;
     }
 
-    printf(
-        "Cliente %s [%lu] realizou uma consulta de saldo: %lf MC | Código: "
-        "%s\n",
-        users[client_id].username.c_str(), client_id, balance,
-        (msg->message_type == OK) ? "OK" : "ERRO");
+    cout <<
+        "Cliente " << users[client_id].username.c_str() << " [" << client_id << "]" << " realizou uma consulta de saldo: " 
+        << balance << " MC | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO") << 
+        '\n';
 }
 
 void handler(Message *msg) {
@@ -141,7 +152,7 @@ int main(int argc, char *argv[]) {
     sigaction(SIGINT, &sigIntHandler, NULL);
 
     if (argc != 2) {
-        printf("Uso correto: %s <porta>\n", argv[0]);
+        cout << "Uso correto: " << argv[0] << " <porta>\n";
         return 1;
     }
 
