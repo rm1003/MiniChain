@@ -1,0 +1,47 @@
+02/11/2025
+Implementação da classe lista ligada, 
+utilizamos Template para deixar a lista genérica.
+
+03/11/2025
+Trabalhamos na implementação da classe Socket do servidor e do cliente, 
+desenvolvendo os métodos de inicialização do servidor.
+
+04/11/2025
+Terminando a implementação da classe socket do servidor e cliente, 
+adicionando a classe pai customSocket contendo os métodos genéricos 
+(APIs) de envio e recebimento de payload.
+
+05/11/2025
+Alteração na estrutura da lista ligada para ser específico 
+no uso de blockchain.
+
+06/11/2025
+Código refatorado, a lista ligada genérica foi transformada em uma 
+lista específica onde os nodos são os blocos da blockchain. 
+Além disto, a classe CustomSocket foi alterada para ser uma classe template,
+ou seja, é possível definir um tipo específico de mensagem enviada pelo socket, 
+aumentando a modularidade e legibilidade do código.
+
+07/11/2025
+A classe ClientSocket foi alterada para suportar a execução do processo cliente
+sem a necessidade de executar o programa novamente para realizar uma operação. 
+Agora, o cliente se mantém rodando enquanto o usuário não 
+encerrar sua execução. 
+Para se comunicar com o servidor, um socket 
+é criado para cada operação e destruído logo em seguida.
+Implementação dos métodos de inserir na blockchain verificando as 
+hashes dos blocos, o servidor além de inserir, retorna mensagens 
+para os clientes informando o status da operação.
+Lógica de execução do cliente e do servidor concluídas.
+
+Resultados Obtidos
+
+Obtivemos uma aplicação Cliente Servidor que possui uma
+implementação simplificada de uma Blockchain, verificando
+a integridade da Blockchain e de suas transações para cada
+nova operação e novo bloco a ser inserido.
+O servidor suporta múltiplos clientes "ao mesmo tempo" e 
+possui uma lógica interna que atribui um ID para cada cliente
+e seu username, dessa forma, enquanto o servidor se mantiver
+em execução, um cliente pode encerrar sua conexão e se conectar
+novamente em outro momento e ainda acessar seu saldo de Minicoins.

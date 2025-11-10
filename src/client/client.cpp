@@ -29,7 +29,8 @@ int main(int argc, char *argv[]) {
     memset(&msg, 0, sizeof(msg));
 
     if (argc != 5) {
-        cout << "Uso correto: " << argv[0] << " <porta> <nome-servidor> <username> <senha>\n";
+        cout << "Uso correto: " << argv[0]
+             << " <porta> <nome-servidor> <username> <senha>\n";
 
         return 0;
     }
@@ -101,7 +102,8 @@ int main(int argc, char *argv[]) {
                 socket->receiveData(msg);
 
                 if (msg.message_type == OK) {
-                    cout << "Depósito de " << value << " MC realizado com sucesso!\n";
+                    cout << "Depósito de " << value
+                         << " MC realizado com sucesso!\n";
                 } else {
                     cout << "Falha ao realizar depósito\n";
                 }
@@ -118,7 +120,8 @@ int main(int argc, char *argv[]) {
                 socket->receiveData(msg);
 
                 if (msg.message_type == OK) {
-                    cout << "Retirada de " << value << " MC realizada com sucesso!\n";
+                    cout << "Retirada de " << value
+                         << " MC realizada com sucesso!\n";
                 } else {
                     cout << "Falha ao realizar retirada\n";
                 }
