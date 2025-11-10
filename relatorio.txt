@@ -34,7 +34,15 @@ hashes dos blocos, o servidor além de inserir, retorna mensagens
 para os clientes informando o status da operação.
 Lógica de execução do cliente e do servidor concluídas.
 
-Resultados Obtidos
+09/11/2025
+Foi modificado algumas partes do código trocando printf para cout do c++.
+Adicionando a função hash SHA256 da biblioteca crypto++ para ser usado no blockchain.
+Possivel problema para usar a biblioteca necessitando o download:
+sudo apt install libcrypto++-dev
+Referência:
+https://stackoverflow.com/questions/5930056/generating-a-sha256-hash-with-crypto-using-a-string-as-input-and-output
+
+Resultados Obtidos:
 
 Obtivemos uma aplicação Cliente Servidor que possui uma
 implementação simplificada de uma Blockchain, verificando
