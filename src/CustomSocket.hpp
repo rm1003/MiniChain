@@ -19,17 +19,36 @@ using namespace std;
 
 #define MAX_HOSTNAME 64
 #define QUEUE_SIZE 5
-#define BUFFER_SIZE 8192
+#define MAX_USERWORD 20
+
+enum MESSAGE_TYPE { EMPTY, LOGIN, TRANSATION, QUERY, OK, ERROR };
+enum MS_TRANSATION_TYPE { MS_NONE, MS_DEPOSIT, MS_WITHDRAW };
+enum MS_LOGIN_TYPE { MS_REQUEST, MS_VALID, MS_INVALID };
 
 typedef struct Message {
-    unsigned char buffer[1024];
+    unsigned long int client_id;
+    union {
+        struct login {
+            char username[MAX_USERWORD + 1];
+            char password[MAX_USERWORD + 1];
+            MS_LOGIN_TYPE login_type;
+        } login;
+
+        struct transation {
+            double value;
+            MS_TRANSATION_TYPE transation_type;
+        } transation;
+
+        double balance;
+    } data;
+    MESSAGE_TYPE message_type;
 } Message;
 
 template <typename T>
 class CustomSocket {
   private:
     void error(const string &msg) const {
-        cerr << "Error in CustomSocket: " << msg << endl;
+        cerr << "Erro em CustomSocket: " << msg << endl;
         exit(EXIT_FAILURE);
     }
 
@@ -45,7 +64,7 @@ class CustomSocket {
 
     bool sendData(const T &data) {
         if (this->sock_fd < 0) {
-            error("No connection for sending data");
+            error("Sem conexao para enviar dados");
         }
 
         long int sent = 1;
@@ -56,7 +75,7 @@ class CustomSocket {
             sent = write(this->sock_fd, buff_data + total_sent,
                          sizeof(T) - total_sent);
             if (sent < 0) {
-                cerr << "Error sending data" << endl;
+                cerr << "Erro ao enviar dados" << endl;
                 return false;
             }
 
@@ -68,7 +87,7 @@ class CustomSocket {
 
     bool receiveData(T &output) {
         if (this->sock_fd < 0) {
-            error("No connection for receiving data");
+            error("Sem conexao para receber dados");
         }
 
         long int received = 1;
@@ -79,7 +98,7 @@ class CustomSocket {
             received = read(this->sock_fd, buff_data + total_received,
                             sizeof(T) - total_received);
             if (received < 0) {
-                cerr << "Error receiving data" << endl;
+                cerr << "Erro ao receber dados" << endl;
                 return false;
             }
 
@@ -100,7 +119,7 @@ class ServerSocket : public CustomSocket<Message> {
     char localhost[MAX_HOSTNAME];
 
     void error(const string &msg) const {
-        cerr << "Error in ServerSocket: " << msg << endl;
+        cerr << "Erro em ServerSocket: " << msg << endl;
         exit(EXIT_FAILURE);
     }
 
@@ -118,7 +137,7 @@ class ServerSocket : public CustomSocket<Message> {
     void init(int port) {
         gethostname(this->localhost, MAX_HOSTNAME);
         if ((this->hp = gethostbyname(this->localhost)) == NULL) {
-            error("Not found my IP");
+            error("Meu IP nao foi encontrado");
         }
 
         bcopy((char *)this->hp->h_addr, (char *)&this->local_address.sin_addr,
@@ -129,20 +148,20 @@ class ServerSocket : public CustomSocket<Message> {
         // this->local_address.sin_addr.s_addr = INADDR_ANY;
 
         if ((this->sock_listen = socket(SOCKET_TYPE, SOCK_STREAM, 0)) < 0) {
-            error("Unable to open socket (server)");
+            error("Nao foi possivel abrir o socket (server)");
         }
 
         if (bind(this->sock_listen, (struct sockaddr *)&this->local_address,
                  sizeof(this->local_address)) < 0) {
-            error("It was not possible to bind");
+            error("Nao foi possivel fazer o bind");
         }
     }
 
     void listenForConnection() {
         if (listen(this->sock_listen, QUEUE_SIZE) < 0) {
-            error("Unable to listen on socket");
+            error("Nao foi possivel escutar o socket");
         }
-        cout << "Server listening on port "
+        cout << "Server ouvindo na porta: "
              << ntohs(this->local_address.sin_port) << endl;
     }
 
@@ -153,11 +172,12 @@ class ServerSocket : public CustomSocket<Message> {
                    &client_length);
 
         if (this->sock_fd <= 0) {
-            cerr << "Failed to accept connection" << endl;
+            cerr << "Falha ao aceitar conexao" << endl;
             return false;
         }
-        cout << "Client connected: " << inet_ntoa(this->client_address.sin_addr)
-             << ":" << ntohs(this->client_address.sin_port) << endl;
+        cout << "Cliente conectado: "
+             << inet_ntoa(this->client_address.sin_addr) << ":"
+             << ntohs(this->client_address.sin_port) << endl;
         return true;
     }
 
@@ -175,7 +195,7 @@ class ClientSocket : public CustomSocket<Message> {
     struct hostent *hp;
 
     void error(const string &msg) const {
-        cerr << "Error in ClientSocket: " << msg << endl;
+        cerr << "Erro em ClientSocket: " << msg << endl;
         exit(EXIT_FAILURE);
     }
 
@@ -186,22 +206,35 @@ class ClientSocket : public CustomSocket<Message> {
 
     void init(int port, const char *server_name) {
         if ((this->hp = gethostbyname(server_name)) == NULL) {
-            error("Unable to obtain server IP address");
+            error("Nao foi possivel obter o endereço IP do servidor");
         }
 
         bcopy((char *)this->hp->h_addr, (char *)&this->server_address.sin_addr,
               this->hp->h_length);
         this->server_address.sin_family = SOCKET_TYPE;
         this->server_address.sin_port = htons(port);
+    }
 
-        if ((this->sock_fd = socket(SOCKET_TYPE, SOCK_STREAM, 0)) < 0) {
-            error("Unable to open socket (client)");
+    bool Connect() {
+        if (this->sock_fd >= 0) {
+            close(this->sock_fd);
+            this->sock_fd = -1;
+        }
+
+        this->sock_fd = socket(SOCKET_TYPE, SOCK_STREAM, 0);
+        if (this->sock_fd < 0) {
+            cerr << "Nao foi possivel abrir o socket (client)" << endl;
+            return false;
         }
 
         if (connect(this->sock_fd, (struct sockaddr *)&this->server_address,
                     sizeof(this->server_address)) < 0) {
-            error("Unable to connect to server");
+            cerr << "Nao foi possivel se conectar ao servidor" << endl;
+            close(this->sock_fd);
+            this->sock_fd = -1;
+            return false;
         }
+        return true;
     }
 };
 
