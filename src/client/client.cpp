@@ -1,3 +1,6 @@
+#include <cryptopp/filters.h>
+#include <cryptopp/hex.h>
+#include <cryptopp/sha.h>
 #include <unistd.h>
 
 #include <cstdio>
@@ -7,19 +10,20 @@
 
 using namespace std;
 
-void protectPassword(char *password) {
-    char aux;
-    char *rev = password;
-    unsigned long int size = strlen(rev);
+char *protectPassword(char *data_to_hash) {
+    CryptoPP::SHA256 hash;
+    std::string result;
 
-    unsigned long int j;
-    for (unsigned long int i = 0; i < size / 2; ++i) {
-        j = size - i - 1;
-        aux = password[i];
-        password[i] = password[j];
-        password[j] = aux;
-    }
-}
+    CryptoPP::StringSource ss(
+        data_to_hash, true,
+        new CryptoPP::HashFilter(
+            hash, new CryptoPP::HexEncoder(new CryptoPP::StringSink(result))));
+
+    char *out = new char[result.size() + 1];
+    if (!out) return nullptr;
+    memcpy(out, result.c_str(), result.size() + 1);
+    return out;
+};
 
 int main(int argc, char *argv[]) {
     int op;
@@ -29,7 +33,8 @@ int main(int argc, char *argv[]) {
     memset(&msg, 0, sizeof(msg));
 
     if (argc != 5) {
-        cout << "Uso correto: " << argv[0] << " <porta> <nome-servidor> <username> <senha>\n";
+        cout << "Uso correto: " << argv[0]
+             << " <porta> <nome-servidor> <username> <senha>\n";
 
         return 0;
     }
@@ -39,8 +44,8 @@ int main(int argc, char *argv[]) {
     int porta = atoi(argv[1]);
     char *host = argv[2];
     char *username = argv[3];
-    char *password = argv[4];
-    protectPassword(password);
+    char *client_password = argv[4];
+    char *password = protectPassword(client_password);
 
     socket->init(porta, host);
 
@@ -75,6 +80,8 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    delete password;
+
     op = 1;
     msg.client_id = id;
     while (op != 0) {
@@ -101,7 +108,8 @@ int main(int argc, char *argv[]) {
                 socket->receiveData(msg);
 
                 if (msg.message_type == OK) {
-                    cout << "Depósito de " << value << " MC realizado com sucesso!\n";
+                    cout << "Depósito de " << value
+                         << " MC realizado com sucesso!\n";
                 } else {
                     cout << "Falha ao realizar depósito\n";
                 }
@@ -118,9 +126,10 @@ int main(int argc, char *argv[]) {
                 socket->receiveData(msg);
 
                 if (msg.message_type == OK) {
-                    cout << "Retirada de " << value << " MC realizada com sucesso!\n";
+                    cout << "Retirada de " << value
+                         << " MC realizada com sucesso!\n";
                 } else {
-                    cout << "Falha ao realizar retirada\n";
+                    cout << "Falha ao realizar retirada\nSaldo insuficiente\n";
                 }
 
                 break;

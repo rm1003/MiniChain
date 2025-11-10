@@ -1,7 +1,9 @@
 #ifndef Blockchain_H
 #define Blockchain_H
 
+#include <chrono>
 #include <cstdlib>
+#include <ctime>
 #include <iostream>
 #include <string>
 
@@ -14,6 +16,7 @@ enum TRANSATION_TYPE { NONE, DEPOSIT, WITHDRAW, CHECK };
 typedef struct Transation {
     unsigned long int client_id;
     double value;
+    time_t time;
     TRANSATION_TYPE type;
 } Transation;
 
@@ -42,6 +45,7 @@ class Blockchain {
         string verify = block->prev_hash;
         verify += block->transation.client_id;
         verify += block->transation.value;
+        verify += block->transation.time;
         verify += block->transation.type;
 
         string hash = this->ComputeHash(verify);
@@ -100,6 +104,7 @@ class Blockchain {
         data_to_hash = new_block->prev_hash;
         data_to_hash += new_block->transation.client_id;
         data_to_hash += new_block->transation.value;
+        data_to_hash += new_block->transation.time;
         data_to_hash += new_block->transation.type;
 
         new_block->actual_hash = ComputeHash(data_to_hash);
