@@ -1,34 +1,30 @@
-#include <cryptopp/filters.h>
-#include <cryptopp/hex.h>
-#include <cryptopp/sha.h>
+
 #include <unistd.h>
 
 #include <cstdio>
 #include <cstring>
+#include <iomanip>
 
 #include "../CustomSocket.hpp"
+#include "../picosha2.hpp"
 
 using namespace std;
 
-char *protectPassword(char *data_to_hash) {
-    CryptoPP::SHA256 hash;
-    std::string result;
+char *protectPassword(const char *data_to_hash) {
+    string data_str(data_to_hash);
+    string hex_str;
+    picosha2::hash256_hex_string(data_str, hex_str);
 
-    CryptoPP::StringSource ss(
-        data_to_hash, true,
-        new CryptoPP::HashFilter(
-            hash, new CryptoPP::HexEncoder(new CryptoPP::StringSink(result))));
-
-    char *out = new char[result.size() + 1];
+    char *out = new char[hex_str.size() + 1];
     if (!out) return nullptr;
-    memcpy(out, result.c_str(), result.size() + 1);
+    memcpy(out, hex_str.c_str(), hex_str.size() + 1);
     return out;
 };
 
 int main(int argc, char *argv[]) {
     int op;
     double value;
-    unsigned long int id;
+    unsigned long int id = 0;
     Message msg;
     memset(&msg, 0, sizeof(msg));
 
@@ -65,6 +61,10 @@ int main(int argc, char *argv[]) {
     socket->sendData(msg);
     socket->receiveData(msg);
 
+    // setup cout
+    cout.setf(ios::fixed, ios::floatfield);
+    cout.precision(2);
+
     cout << "Cliente MiniCoin\n";
 
     // Login do Cliente
@@ -84,6 +84,7 @@ int main(int argc, char *argv[]) {
 
     op = 1;
     msg.client_id = id;
+
     while (op != 0) {
         cout << "Operações Disponíveis:\n";
         cout << "    0 - Encerrar programa\n";

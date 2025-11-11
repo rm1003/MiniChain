@@ -1,6 +1,4 @@
-#include <cryptopp/filters.h>
-#include <cryptopp/hex.h>
-#include <cryptopp/sha.h>
+
 #include <netinet/in.h>
 #include <signal.h>
 
@@ -9,9 +7,11 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
+#include <iomanip>
 
 #include "../Blockchain.hpp"
 #include "../CustomSocket.hpp"
+#include "../picosha2.hpp"
 
 using namespace std;
 
@@ -33,25 +33,19 @@ void finish(int s) {
 }
 
 string hashFunction(const string data_to_hash) {
-    CryptoPP::SHA256 hash;
-    string result;
-
-    CryptoPP::StringSource tmp(
-        data_to_hash,
-        true,                                     // flag de processamento total
-        new CryptoPP::HashFilter(                 // filtro (alg. cripto)
-            hash,                                 // tipo de cripto
-            new CryptoPP::HexEncoder(             // converte de bin em hexa
-                new CryptoPP::StringSink(result)  // guarda resultado em result
-                )));
-
-    return result;
+    string hex_str;
+    picosha2::hash256_hex_string(data_to_hash, hex_str);
+    return hex_str;
 };
 
 void authenticate(Message *msg) {
     unsigned long int i;
     bool found = false;
 
+    long timep = time(&timep);
+    string s = ctime(&timep);
+    s[s.size() - 1] = '\0';
+    cout << "[" << s << "]:" << " ";
     cout << "Tentativa de " << msg->data.login.username
          << " de autenticar...\n";
     for (i = 0; i < users.size(); ++i) {
@@ -94,7 +88,6 @@ void transation(Message *msg) {
                                                                    : WITHDRAW;
 
     tr.time = time(0);
-
     time(&tr.time);
 
     if (blockchain->Insert(tr)) {
@@ -112,7 +105,7 @@ void transation(Message *msg) {
 
     string s = ctime(&tr.time);
     s[s.size() - 1] = '\0';
-    cout << "[ " << s << " ]:" << " ";
+    cout << "[" << s << "]:" << " ";
     cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
          << "]" << " realizou uma ação de " << op.c_str() << " no valor de "
          << value
@@ -131,6 +124,10 @@ void query(Message *msg) {
         msg->message_type = ERROR;
     }
 
+    long timep = time(&timep);
+    string s = ctime(&timep);
+    s[s.size() - 1] = '\0';
+    cout << "[ " << s << " ]:" << " ";
     cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
          << "]" << " realizou uma consulta de saldo: " << balance
          << " MC | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO")
@@ -170,6 +167,10 @@ int main(int argc, char *argv[]) {
 
     s_socket->init(atoi(argv[1]));
     s_socket->listenForConnection();
+
+    // setup cout
+    cout.setf(ios::fixed, ios::floatfield);
+    cout.precision(2);
 
     while (1) {
         s_socket->acceptConnection();
