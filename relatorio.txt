@@ -43,10 +43,21 @@ Referência:
 https://stackoverflow.com/questions/5930056/generating-a-sha256-hash-with-crypto-using-a-string-as-input-and-output
 
 10/11/2025
-Correção de saída de notação científica do cout, fixando a precisão do float para duas casas decimais.
-Mudança na biblioteca e na função hash SHA256, foi adicionado a biblioteca picosha2.hpp na qual contém as funções de cálculo da criptografia SHA256 que é utilizado para a hash da blockchain. A ideia de adicionar essa biblioteca está em tirar a dependência da necessidade de fazer download da biblioteca (versão anterior usando crypto++).
+Correção de saída de notação científica do cout, 
+fixando a precisão do float para duas casas decimais.
+Mudança na biblioteca e na função hash SHA256, foi adicionado 
+a biblioteca picosha2.hpp na qual contém as funções de cálculo 
+da criptografia SHA256 que é utilizado para a hash da blockchain. 
+A ideia de adicionar essa biblioteca está em tirar a dependência 
+da necessidade de fazer download da biblioteca (versão anterior usando crypto++).
 Referência:
 https://github.com/okdshin/PicoSHA2/tree/master
+A estrutura de mensagem e transação foram alteradas para suportar a operação
+de transferência de Minicoins de um cliente para outro, também foram implementadas
+as funções para esse procedimento, permitindo que um usuário envie parte de seu
+saldo para outro cliente desde que saiba seu username.
+Adicionada a verificação de integridade da Blockchain para cada 
+operação de inserção.
 
 Resultados Obtidos:
 
