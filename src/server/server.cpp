@@ -7,7 +7,6 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
-#include <iomanip>
 
 #include "../Blockchain.hpp"
 #include "../CustomSocket.hpp"
@@ -86,6 +85,7 @@ void transation(Message *msg) {
 
     tr.client_id = tr.dest_id = client_id;
     tr.value = value;
+
     tr.type = (msg->data.transation.transation_type == MS_DEPOSIT) ? DEPOSIT
                                                                    : WITHDRAW;
     tr.time = time(0);

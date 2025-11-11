@@ -1,5 +1,5 @@
-#ifndef Blockchain_H
-#define Blockchain_H
+#ifndef BLOCKCHAIN_H
+#define BLOCKCHAIN_H
 
 #include <cstdlib>
 #include <ctime>

@@ -3,7 +3,6 @@
 
 #include <cstdio>
 #include <cstring>
-#include <iomanip>
 
 #include "../CustomSocket.hpp"
 #include "../picosha2.hpp"
@@ -15,16 +14,19 @@ char *protectPassword(const char *data_to_hash) {
     string hex_str;
     picosha2::hash256_hex_string(data_str, hex_str);
 
-    char *out = new char[hex_str.size() + 1];
+    char *out = new char[hex_str.size() + 1]();
+
     if (!out) return nullptr;
+
     memcpy(out, hex_str.c_str(), hex_str.size() + 1);
+
     return out;
 };
 
 int main(int argc, char *argv[]) {
     int op;
     double value;
-    unsigned long int id;
+    unsigned long int id = 0;
     char destination[MAX_USERWORD + 1];
     Message msg;
     memset(&msg, 0, sizeof(msg));
@@ -51,6 +53,7 @@ int main(int argc, char *argv[]) {
 
     memset(msg.data.login.username, 0, MAX_USERWORD);
     memset(msg.data.login.password, 0, MAX_USERWORD);
+    memset(destination, 0, MAX_USERWORD);
 
     memcpy(msg.data.login.username, username,
            (strlen(username) > MAX_USERWORD) ? MAX_USERWORD : strlen(username));
@@ -81,7 +84,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    delete password;
+    delete[] password;
 
     op = 1;
     msg.client_id = id;
@@ -106,9 +109,11 @@ int main(int argc, char *argv[]) {
             case 1:
                 cout << "Insira o valor para depositar: ";
                 cin >> value;
+
                 msg.message_type = TRANSATION;
                 msg.data.transation.transation_type = MS_DEPOSIT;
                 msg.data.transation.value = value;
+
                 socket->Connect();
                 socket->sendData(msg);
                 socket->receiveData(msg);
