@@ -1,5 +1,4 @@
-#include <cryptopp/hex.h>
-#include <cryptopp/sha.h>
+
 #include <netinet/in.h>
 #include <signal.h>
 
@@ -8,9 +7,11 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
+#include <iomanip>
 
 #include "../Blockchain.hpp"
 #include "../CustomSocket.hpp"
+#include "../picosha2.hpp"
 
 using namespace std;
 
@@ -32,19 +33,9 @@ void finish(int s) {
 }
 
 string hashFunction(const string data_to_hash) {
-    CryptoPP::SHA256 hash;
-    string result;
-
-    CryptoPP::StringSource tmp(
-        data_to_hash,
-        true,                                     // flag de processamento total
-        new CryptoPP::HashFilter(                 // filtro (alg. cripto)
-            hash,                                 // tipo de cripto
-            new CryptoPP::HexEncoder(             // converte de bin em hexa
-                new CryptoPP::StringSink(result)  // guarda resultado em result
-                )));
-
-    return result;
+    string hex_str;
+    picosha2::hash256_hex_string(data_to_hash, hex_str);
+    return hex_str;
 };
 
 void authenticate(Message *msg) {
@@ -176,6 +167,10 @@ int main(int argc, char *argv[]) {
 
     s_socket->init(atoi(argv[1]));
     s_socket->listenForConnection();
+
+    // setup cout
+    cout.setf(ios::fixed, ios::floatfield);
+    cout.precision(2);
 
     while (1) {
         s_socket->acceptConnection();
