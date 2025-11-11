@@ -21,8 +21,15 @@ using namespace std;
 #define QUEUE_SIZE 5
 #define MAX_USERWORD 20
 
-enum MESSAGE_TYPE { EMPTY, LOGIN, TRANSATION, QUERY, OK, ERROR };
-enum MS_TRANSATION_TYPE { MS_NONE, MS_DEPOSIT, MS_WITHDRAW };
+enum MESSAGE_TYPE { EMPTY, LOGIN, TRANSATION, TRANSFERENCE, QUERY, OK, ERROR };
+enum MS_TRANSATION_TYPE {
+    MS_NONE,
+    MS_DEPOSIT,
+    MS_WITHDRAW,
+    MS_TRANSFERENCE,
+    MS_INVALID_USER,
+    MS_INSUFFICIENT
+};
 enum MS_LOGIN_TYPE { MS_REQUEST, MS_VALID, MS_INVALID };
 
 typedef struct Message {
@@ -38,6 +45,12 @@ typedef struct Message {
             double value;
             MS_TRANSATION_TYPE transation_type;
         } transation;
+
+        struct transfer {
+            char destination_username[MAX_USERWORD + 1];
+            double value;
+            MS_TRANSATION_TYPE transation_type;
+        } transfer;
 
         double balance;
     } data;

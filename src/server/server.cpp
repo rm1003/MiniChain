@@ -1,16 +1,17 @@
+
 #include <netinet/in.h>
-#include <cryptopp/sha.h>
-#include <cryptopp/hex.h>
-#include <cryptopp/filters.h>
 #include <signal.h>
 
-#include <algorithm>
 #include <cstdio>
 #include <cstring>
+#include <ctime>
+#include <iostream>
 #include <vector>
+#include <iomanip>
 
 #include "../Blockchain.hpp"
 #include "../CustomSocket.hpp"
+#include "../picosha2.hpp"
 
 using namespace std;
 
@@ -32,28 +33,23 @@ void finish(int s) {
 }
 
 string hashFunction(const string data_to_hash) {
-    CryptoPP::SHA256 hash;
-    string result;
-
-    CryptoPP::StringSource tmp(
-        data_to_hash,
-        true,                                       // flag de processamento total
-        new CryptoPP::HashFilter(                   // filtro (alg. cripto)
-            hash,                                   // tipo de cripto
-            new CryptoPP::HexEncoder(               // converte de bin em hexa
-                new CryptoPP::StringSink(result)    // guarda resultado em result
-            )
-        )
-    );
-
-    return result;
+    string hex_str;
+    picosha2::hash256_hex_string(data_to_hash, hex_str);
+    return hex_str;
 };
 
 void authenticate(Message *msg) {
     unsigned long int i;
     bool found = false;
 
-    cout << "Tentativa de " << msg->data.login.username << " de autenticar...\n";
+    long timer = time(0);
+    time(&timer);
+
+    string s = ctime(&timer);
+    s[s.size() - 1] = '\0';
+    cout << "[" << s << "]: ";
+    cout << "Tentativa de " << msg->data.login.username
+         << " de autenticar...\n";
     for (i = 0; i < users.size(); ++i) {
         if (msg->data.login.username == users[i].username) {
             found = true;
@@ -62,7 +58,7 @@ void authenticate(Message *msg) {
     }
 
     if (found) {
-        if (hashFunction(msg->data.login.password) == users[i].password) {
+        if (msg->data.login.password == users[i].password) {
             msg->data.login.login_type = MS_VALID;
             msg->client_id = i;
             cout << "Usuário autenticado.\n";
@@ -74,11 +70,12 @@ void authenticate(Message *msg) {
     } else {
         user new_user;
         new_user.username = msg->data.login.username;
-        new_user.password = hashFunction(msg->data.login.password);
+        new_user.password = msg->data.login.password;
         users.push_back(new_user);
         msg->data.login.login_type = MS_VALID;
         msg->client_id = users.size() - 1;
-        cout << "Novo usuário criado e autenticado | ID: " << msg->client_id << '\n';
+        cout << "Novo usuário criado e autenticado | ID: " << msg->client_id
+             << '\n';
     }
 }
 
@@ -87,15 +84,18 @@ void transation(Message *msg) {
     unsigned long int client_id = msg->client_id;
     double value = msg->data.transation.value;
 
-    tr.client_id = client_id;
+    tr.client_id = tr.dest_id = client_id;
     tr.value = value;
     tr.type = (msg->data.transation.transation_type == MS_DEPOSIT) ? DEPOSIT
                                                                    : WITHDRAW;
+    tr.time = time(0);
+    time(&tr.time);
 
     if (blockchain->Insert(tr)) {
         msg->message_type = OK;
     } else {
         msg->message_type = ERROR;
+        msg->data.transation.transation_type = MS_INSUFFICIENT;
     }
 
     string op;
@@ -105,10 +105,66 @@ void transation(Message *msg) {
         op = "RETIRADA";
     }
 
-    cout <<
-        "Cliente " << users[client_id].username.c_str() << " [" << client_id << "]" << " realizou uma ação de " 
-        << op.c_str() << " no valor de " << value << " MC | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO") << 
-        '\n';
+    string s = ctime(&tr.time);
+    s[s.size() - 1] = '\0';
+    cout << "[" << s << "]: ";
+    cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
+         << "]" << " realizou uma ação de " << op.c_str() << " no valor de "
+         << value
+         << " MC | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO")
+         << '\n';
+}
+
+void transfer(Message *msg) {
+    Transation tr;
+    bool found;
+    unsigned long int i;
+    unsigned long int client_id = msg->client_id;
+    double value = msg->data.transfer.value;
+
+    tr.client_id = client_id;
+    tr.value = value;
+    tr.type = TRANSFER;
+    tr.time = time(0);
+
+    found = false;
+    for (i = 0; i < users.size(); ++i) {
+        if (msg->data.transfer.destination_username == users[i].username) {
+            found = true;
+            break;
+        }
+    }
+
+    time(&tr.time);
+
+    string s = ctime(&tr.time);
+    s[s.size() - 1] = '\0';
+    cout << "[" << s << "]: ";
+
+    if (!(found)) {
+        cout << "Usuário não encontrado\n";
+        msg->message_type = ERROR;
+        msg->data.transation.transation_type = MS_INVALID_USER;
+        return;
+    }
+
+    tr.dest_id = i;
+
+    if (blockchain->Insert(tr)) {
+        msg->message_type = OK;
+    } else {
+        cout << "Saldo insuficiente\n";
+        msg->message_type = ERROR;
+        msg->data.transation.transation_type = MS_INSUFFICIENT;
+        return;
+    }
+
+    cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
+         << "]" << " realizou uma ação de TRANSFERÊNCIA no valor de " << value
+         << " MC para o cliente " << users[tr.dest_id].username.c_str() << " ["
+         << tr.dest_id << "] "
+         << " | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO")
+         << '\n';
 }
 
 void query(Message *msg) {
@@ -122,10 +178,16 @@ void query(Message *msg) {
         msg->message_type = ERROR;
     }
 
-    cout <<
-        "Cliente " << users[client_id].username.c_str() << " [" << client_id << "]" << " realizou uma consulta de saldo: " 
-        << balance << " MC | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO") << 
-        '\n';
+    long timer = time(0);
+    time(&timer);
+
+    string s = ctime(&timer);
+    s[s.size() - 1] = '\0';
+    cout << "[" << s << "]: ";
+    cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
+         << "]" << " realizou uma consulta de saldo: " << balance
+         << " MC | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO")
+         << '\n';
 }
 
 void handler(Message *msg) {
@@ -133,6 +195,8 @@ void handler(Message *msg) {
         authenticate(msg);
     } else if (msg->message_type == TRANSATION) {
         transation(msg);
+    } else if (msg->message_type == TRANSFERENCE) {
+        transfer(msg);
     } else {
         query(msg);
     }
@@ -161,6 +225,10 @@ int main(int argc, char *argv[]) {
 
     s_socket->init(atoi(argv[1]));
     s_socket->listenForConnection();
+
+    // setup cout
+    cout.setf(ios::fixed, ios::floatfield);
+    cout.precision(2);
 
     while (1) {
         s_socket->acceptConnection();
