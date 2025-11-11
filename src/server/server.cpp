@@ -64,7 +64,7 @@ void authenticate(Message *msg) {
             break;
         }
     }
-    
+
     // Se ja conectou, entao valida o seu nome e sua senha
     if (found) {
         if (msg->data.login.password == users[i].password) {
@@ -259,6 +259,12 @@ int main(int argc, char *argv[]) {
     // setup cout
     cout.setf(ios::fixed, ios::floatfield);
     cout.precision(2);
+
+    cout<< "=======================================================================\n"
+        << "  Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash SHA256)\n"
+        << "Inicio da execucao: log das transacoes feitas pelos clientes (usuarios)\n"
+        << " Ruibin Mei e Vinicius J. Santos - Disciplina Redes de Computadores II\n"
+        << "=======================================================================\n";
 
     // Aceita a conexao do cliente
     // Recebe os dados mandados pelo cliente
