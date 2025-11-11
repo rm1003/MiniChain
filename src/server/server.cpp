@@ -42,10 +42,12 @@ void authenticate(Message *msg) {
     unsigned long int i;
     bool found = false;
 
-    long timep = time(&timep);
-    string s = ctime(&timep);
+    long timer = time(0);
+    time(&timer);
+
+    string s = ctime(&timer);
     s[s.size() - 1] = '\0';
-    cout << "[" << s << "]:" << " ";
+    cout << "[" << s << "]: ";
     cout << "Tentativa de " << msg->data.login.username
          << " de autenticar...\n";
     for (i = 0; i < users.size(); ++i) {
@@ -82,11 +84,10 @@ void transation(Message *msg) {
     unsigned long int client_id = msg->client_id;
     double value = msg->data.transation.value;
 
-    tr.client_id = client_id;
+    tr.client_id = tr.dest_id = client_id;
     tr.value = value;
     tr.type = (msg->data.transation.transation_type == MS_DEPOSIT) ? DEPOSIT
                                                                    : WITHDRAW;
-
     tr.time = time(0);
     time(&tr.time);
 
@@ -94,6 +95,7 @@ void transation(Message *msg) {
         msg->message_type = OK;
     } else {
         msg->message_type = ERROR;
+        msg->data.transation.transation_type = MS_INSUFFICIENT;
     }
 
     string op;
@@ -105,11 +107,63 @@ void transation(Message *msg) {
 
     string s = ctime(&tr.time);
     s[s.size() - 1] = '\0';
-    cout << "[" << s << "]:" << " ";
+    cout << "[" << s << "]: ";
     cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
          << "]" << " realizou uma ação de " << op.c_str() << " no valor de "
          << value
          << " MC | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO")
+         << '\n';
+}
+
+void transfer(Message *msg) {
+    Transation tr;
+    bool found;
+    unsigned long int i;
+    unsigned long int client_id = msg->client_id;
+    double value = msg->data.transfer.value;
+
+    tr.client_id = client_id;
+    tr.value = value;
+    tr.type = TRANSFER;
+    tr.time = time(0);
+
+    found = false;
+    for (i = 0; i < users.size(); ++i) {
+        if (msg->data.transfer.destination_username == users[i].username) {
+            found = true;
+            break;
+        }
+    }
+
+    time(&tr.time);
+
+    string s = ctime(&tr.time);
+    s[s.size() - 1] = '\0';
+    cout << "[" << s << "]: ";
+
+    if (!(found)) {
+        cout << "Usuário não encontrado\n";
+        msg->message_type = ERROR;
+        msg->data.transation.transation_type = MS_INVALID_USER;
+        return;
+    }
+
+    tr.dest_id = i;
+
+    if (blockchain->Insert(tr)) {
+        msg->message_type = OK;
+    } else {
+        cout << "Saldo insuficiente\n";
+        msg->message_type = ERROR;
+        msg->data.transation.transation_type = MS_INSUFFICIENT;
+        return;
+    }
+
+    cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
+         << "]" << " realizou uma ação de TRANSFERÊNCIA no valor de " << value
+         << " MC para o cliente " << users[tr.dest_id].username.c_str() << " ["
+         << tr.dest_id << "] "
+         << " | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO")
          << '\n';
 }
 
@@ -124,10 +178,12 @@ void query(Message *msg) {
         msg->message_type = ERROR;
     }
 
-    long timep = time(&timep);
-    string s = ctime(&timep);
+    long timer = time(0);
+    time(&timer);
+
+    string s = ctime(&timer);
     s[s.size() - 1] = '\0';
-    cout << "[ " << s << " ]:" << " ";
+    cout << "[" << s << "]: ";
     cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
          << "]" << " realizou uma consulta de saldo: " << balance
          << " MC | Código: " << ((msg->message_type == OK) ? "OK" : "ERRO")
@@ -139,6 +195,8 @@ void handler(Message *msg) {
         authenticate(msg);
     } else if (msg->message_type == TRANSATION) {
         transation(msg);
+    } else if (msg->message_type == TRANSFERENCE) {
+        transfer(msg);
     } else {
         query(msg);
     }

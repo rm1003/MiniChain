@@ -24,7 +24,8 @@ char *protectPassword(const char *data_to_hash) {
 int main(int argc, char *argv[]) {
     int op;
     double value;
-    unsigned long int id = 0;
+    unsigned long int id;
+    char destination[MAX_USERWORD + 1];
     Message msg;
     memset(&msg, 0, sizeof(msg));
 
@@ -86,11 +87,14 @@ int main(int argc, char *argv[]) {
     msg.client_id = id;
 
     while (op != 0) {
+        sleep(1);
+
         cout << "Operações Disponíveis:\n";
         cout << "    0 - Encerrar programa\n";
         cout << "    1 - Depositar\n";
         cout << "    2 - Retirar\n";
-        cout << "    3 - Consultar saldo\n";
+        cout << "    3 - Realizar transferência\n";
+        cout << "    4 - Consultar saldo\n";
         cout << "Insira uma operação: ";
         cin >> op;
 
@@ -98,6 +102,7 @@ int main(int argc, char *argv[]) {
             case 0:
                 cout << "Encerrando Cliente Minicoin\n";
                 break;
+
             case 1:
                 cout << "Insira o valor para depositar: ";
                 cin >> value;
@@ -116,6 +121,7 @@ int main(int argc, char *argv[]) {
                 }
 
                 break;
+
             case 2:
                 cout << "Insira o valor para retirar: ";
                 cin >> value;
@@ -130,11 +136,48 @@ int main(int argc, char *argv[]) {
                     cout << "Retirada de " << value
                          << " MC realizada com sucesso!\n";
                 } else {
-                    cout << "Falha ao realizar retirada\nSaldo insuficiente\n";
+                    if (msg.data.transation.transation_type == MS_INSUFFICIENT)
+                        cout << "Falha ao realizar retirada\nSaldo "
+                                "insuficiente\n";
                 }
 
                 break;
             case 3:
+                cout << "Insira o username do destinatário (MAX: 20 char): ";
+                cin >> destination;
+                cout << "Insira o valor a ser transferido: ";
+                cin >> value;
+                msg.message_type = TRANSFERENCE;
+                msg.data.transfer.transation_type = MS_TRANSFERENCE;
+                msg.data.transfer.value = value;
+
+                memcpy(msg.data.transfer.destination_username, destination,
+                       MAX_USERWORD);
+
+                if (strcmp(username, destination) == 0) {
+                    cout << "Não é possível enviar dinheiro para si próprio\n";
+                    continue;
+                }
+
+                socket->Connect();
+                socket->sendData(msg);
+                socket->receiveData(msg);
+
+                if (msg.message_type == OK) {
+                    cout << "Transferência de " << value << " MC para "
+                         << destination << " realizada com sucesso!\n";
+                } else {
+                    if (msg.data.transation.transation_type == MS_INVALID_USER)
+                        cout << "Falha ao realizar transferência\nO usuário "
+                             << destination << " não existe\n";
+
+                    if (msg.data.transation.transation_type == MS_INSUFFICIENT)
+                        cout << "Falha ao realizar transferência\nSaldo "
+                                "insuficiente\n";
+                }
+
+                break;
+            case 4:
                 msg.message_type = QUERY;
                 msg.data.balance = 0;
                 socket->Connect();
@@ -153,7 +196,6 @@ int main(int argc, char *argv[]) {
                 cout << "Insira uma operação válida...\n";
         }
         cout << "\n\n";
-        sleep(2);
     }
 
     delete socket;

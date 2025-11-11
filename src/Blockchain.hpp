@@ -10,10 +10,11 @@
 
 using namespace std;
 
-enum TRANSATION_TYPE { NONE, DEPOSIT, WITHDRAW, CHECK };
+enum TRANSATION_TYPE { NONE, DEPOSIT, WITHDRAW, TRANSFER, CHECK };
 
 typedef struct Transation {
     unsigned long int client_id;
+    unsigned long int dest_id;
     double value;
     time_t time;
     TRANSATION_TYPE type;
@@ -43,6 +44,7 @@ class Blockchain {
     bool CheckHash(Block *block) {
         string verify = block->prev_hash;
         verify += block->transation.client_id;
+        verify += block->transation.dest_id;
         verify += block->transation.value;
         verify += block->transation.time;
         verify += block->transation.type;
@@ -86,13 +88,15 @@ class Blockchain {
         double balance;
         string data_to_hash;
 
-        if (tr.type == WITHDRAW) {
+        if (tr.type == WITHDRAW || tr.type == TRANSFER) {
             if (this->GetUserBalance(tr.client_id, &balance)) {
                 if (balance - tr.value < 0) {
                     return false;
                 }
             }
         }
+
+        if (!(VerifyBlockchainIntegrity())) return false;
 
         Block *new_block = new Block(nullptr);
         new_block->prev_hash = (this->tail != nullptr)
@@ -102,6 +106,7 @@ class Blockchain {
 
         data_to_hash = new_block->prev_hash;
         data_to_hash += new_block->transation.client_id;
+        data_to_hash += new_block->transation.dest_id;
         data_to_hash += new_block->transation.value;
         data_to_hash += new_block->transation.time;
         data_to_hash += new_block->transation.type;
@@ -143,10 +148,16 @@ class Blockchain {
             if (current->transation.client_id == id) {
                 if (current->transation.type == DEPOSIT) {
                     s += current->transation.value;
-                } else if (current->transation.type == WITHDRAW) {
+                } else {
                     s -= current->transation.value;
                 }
             }
+            if (current->transation.type == TRANSFER) {
+                if (current->transation.dest_id == id) {
+                    s += current->transation.value;
+                }
+            }
+
             current = current->next;
         }
 
@@ -178,6 +189,7 @@ class Blockchain {
 
             cout << "Transacao: Tipo=" << current->transation.type
                  << " ClienteID=" << current->transation.client_id
+                 << " DestinatarioID=" << current->transation.dest_id
                  << " Valor=" << current->transation.value << endl;
             cout << "----------------------------------" << endl;
 
