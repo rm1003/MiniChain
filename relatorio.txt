@@ -42,6 +42,12 @@ sudo apt install libcrypto++-dev
 Referência:
 https://stackoverflow.com/questions/5930056/generating-a-sha256-hash-with-crypto-using-a-string-as-input-and-output
 
+10/11/2025
+Correção de saída de notação científica do cout, fixando a precisão do float para duas casas decimais.
+Mudança na biblioteca e na função hash SHA256, foi adicionado a biblioteca picosha2.hpp na qual contém as funções de cálculo da criptografia SHA256 que é utilizado para a hash da blockchain. A ideia de adicionar essa biblioteca está em tirar a dependência da necessidade de fazer download da biblioteca (versão anterior usando crypto++).
+Referência:
+https://github.com/okdshin/PicoSHA2/tree/master
+
 Resultados Obtidos:
 
 Obtivemos uma aplicação Cliente Servidor que possui uma
