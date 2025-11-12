@@ -54,7 +54,7 @@ void authenticate(Message *msg) {
     s[s.size() - 1] = '\0';
     cout << "[" << s << "]: ";
     cout << "Tentativa de " << msg->data.login.username
-        << " de autenticar...\n";
+         << " de autenticar...\n";
 
     // Procura o nome do cliente no vetor para identificar se esse cliente ja
     // conectou alguma vez
@@ -87,7 +87,7 @@ void authenticate(Message *msg) {
         msg->data.login.login_type = MS_VALID;
         msg->client_id = users.size() - 1;
         cout << "Novo usuario criado e autenticado | ID: " << msg->client_id
-            << '\n';
+             << '\n';
     }
 }
 
@@ -102,7 +102,7 @@ void transation(Message *msg) {
 
     // Identifica o tipo da transacao
     tr.type = (msg->data.transation.transation_type == MS_DEPOSIT) ? DEPOSIT
-        : WITHDRAW;
+                                                                   : WITHDRAW;
     tr.time = time(0);
     time(&tr.time);
 
@@ -128,21 +128,23 @@ void transation(Message *msg) {
     s[s.size() - 1] = '\0';
     cout << "[" << s << "]: ";
     cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
-        << "]" << " realizou uma acao de " << op.c_str() << " no valor de "
-        << value
-        << " MC | Codigo: " << ((msg->message_type == OK) ? "OK" : "ERRO")
-        << '\n';
+         << "]" << " realizou uma acao de " << op.c_str() << " no valor de "
+         << value
+         << " MC | Codigo: " << ((msg->message_type == OK) ? "OK" : "ERRO")
+         << '\n';
 }
 
 // Funcao para transferencia de MiniCoins entre os clientes existentes
 void transfer(Message *msg) {
     Transation tr;
     bool found;
+    string op;
+    long int id;
     unsigned long int i;
     unsigned long int client_id = msg->client_id;
     double value = msg->data.transfer.value;
 
-    tr.client_id = client_id;
+    tr.client_id = tr.dest_id = client_id;
     tr.value = value;
     tr.type = TRANSFER;
     tr.time = time(0);
@@ -164,31 +166,30 @@ void transfer(Message *msg) {
 
     // Se nao achou o destinatario, manda uma mensagem para o cliente avisando
     if (!(found)) {
-        cout << "Usuario nao encontrado\n";
         msg->message_type = ERROR;
         msg->data.transation.transation_type = MS_INVALID_USER;
-        return;
-    }
-
-    tr.dest_id = i;
-    // Achou o destinatario, entao cria um bloco novo e envia um OK para
-    // o cliente
-    if (blockchain->Insert(tr)) {
-        msg->message_type = OK;
+        op = "USUARIO NAO EXISTE";
+        id = -1;
     } else {
-        // Caso saldo insuficiente, avisa o cliente com um erro
-        cout << "Saldo insuficiente\n";
-        msg->message_type = ERROR;
-        msg->data.transation.transation_type = MS_INSUFFICIENT;
-        return;
+        id = i;
+        tr.dest_id = i;
+        // Achou o destinatario, entao cria um bloco novo e envia um OK para
+        // o cliente
+        if (blockchain->Insert(tr)) {
+            msg->message_type = OK;
+            op = "OK";
+        } else {
+            // Caso saldo insuficiente, avisa o cliente com um erro
+            msg->message_type = ERROR;
+            msg->data.transation.transation_type = MS_INSUFFICIENT;
+            op = "SALDO INSUFICIENTE";
+        }
     }
 
     cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
-        << "]" << " realizou uma acao de TRANSFERENCIA no valor de " << value
-        << " MC para o cliente " << users[tr.dest_id].username.c_str() << " ["
-        << tr.dest_id << "] "
-        << " | Codigo: " << ((msg->message_type == OK) ? "OK" : "ERRO")
-        << '\n';
+         << "]" << " realizou uma acao de TRANSFERENCIA no valor de " << value
+         << " MC para o cliente " << msg->data.transfer.destination_username
+         << " [" << id << "] " << " | Codigo: " << op << '\n';
 }
 
 // Funcao de consulta do saldo
@@ -213,9 +214,9 @@ void query(Message *msg) {
     s[s.size() - 1] = '\0';
     cout << "[" << s << "]: ";
     cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
-        << "]" << " realizou uma consulta de saldo: " << balance
-        << " MC | Codigo: " << ((msg->message_type == OK) ? "OK" : "ERRO")
-        << '\n';
+         << "]" << " realizou uma consulta de saldo: " << balance
+         << " MC | Codigo: " << ((msg->message_type == OK) ? "OK" : "ERRO")
+         << '\n';
 }
 
 // Funcao auxiliar para redirecionar as chamadas de funcoes para tratar o tipo
@@ -260,11 +261,16 @@ int main(int argc, char *argv[]) {
     cout.setf(ios::fixed, ios::floatfield);
     cout.precision(2);
 
-    cout<< "=======================================================================\n"
-        << "  Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash SHA256)\n"
-        << "Inicio da execucao: log das transacoes feitas pelos clientes (usuarios)\n"
-        << " Ruibin Mei e Vinicius J. Santos - Disciplina Redes de Computadores II\n"
-        << "=======================================================================\n";
+    cout << "=================================================================="
+            "=====\n"
+         << "  Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash "
+            "SHA256)\n"
+         << "Inicio da execucao: log das transacoes feitas pelos clientes "
+            "(usuarios)\n"
+         << " Ruibin Mei e Vinicius J. Santos - Disciplina Redes de "
+            "Computadores II\n"
+         << "=================================================================="
+            "=====\n";
 
     // Aceita a conexao do cliente
     // Recebe os dados mandados pelo cliente

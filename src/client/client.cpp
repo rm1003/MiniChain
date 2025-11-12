@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 
     if (argc != 5) {
         cout << "Uso correto: " << argv[0]
-            << " <porta> <nome-servidor> <username> <senha>\n";
+             << " <porta> <nome-servidor> <username> <senha>\n";
 
         return 0;
     }
@@ -57,10 +57,10 @@ int main(int argc, char *argv[]) {
     memset(destination, 0, MAX_USERWORD);
 
     memcpy(msg.data.login.username, username,
-            (strlen(username) > MAX_USERWORD) ? MAX_USERWORD : strlen(username));
+           (strlen(username) > MAX_USERWORD) ? MAX_USERWORD : strlen(username));
 
     memcpy(msg.data.login.password, password,
-            (strlen(password) > MAX_USERWORD) ? MAX_USERWORD : strlen(password));
+           (strlen(password) > MAX_USERWORD) ? MAX_USERWORD : strlen(password));
 
     socket->Connect();
     socket->sendData(msg);
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
         cout << "    2 - Retirar\n";
         cout << "    3 - Realizar transferencia\n";
         cout << "    4 - Consultar saldo\n";
-        cout << "Insira uma operacao(numero): ";
+        cout << "Insira uma operacao (numero): ";
         cin >> op;
 
         switch (op) {
@@ -116,7 +116,11 @@ int main(int argc, char *argv[]) {
             case 1:
                 cout << "Insira o valor para depositar: ";
                 cin >> value;
-                // Atribui as informacoes na mensagem 
+                if (value <= 0) {
+                    cout << "Insira um valor valido. ( Maior que zero )\n";
+                    break;
+                }
+                // Atribui as informacoes na mensagem
                 msg.message_type = TRANSATION;
                 msg.data.transation.transation_type = MS_DEPOSIT;
                 msg.data.transation.value = value;
@@ -128,16 +132,21 @@ int main(int argc, char *argv[]) {
                 // se nao - deu falha ou algum erro
                 if (msg.message_type == OK) {
                     cout << "Deposito de " << value
-                        << " MC realizado com sucesso!\n";
+                         << " MC realizado com sucesso!\n";
                 } else {
                     cout << "Falha ao realizar deposito\n";
                 }
                 break;
-            
+
             // Caso de retirar algum valor do saldo total
             case 2:
                 cout << "Insira o valor para retirar: ";
                 cin >> value;
+                if (value <= 0) {
+                    cout << "Insira um valor valido. ( Maior que zero )\n";
+                    break;
+                }
+
                 // Atribui informacoes na mensagem
                 msg.message_type = TRANSATION;
                 msg.data.transation.transation_type = MS_WITHDRAW;
@@ -150,11 +159,11 @@ int main(int argc, char *argv[]) {
                 // se nao - pode ser uma falha ou saldo insuficiente
                 if (msg.message_type == OK) {
                     cout << "Retirada de " << value
-                        << " MC realizada com sucesso!\n";
+                         << " MC realizada com sucesso!\n";
                 } else {
                     if (msg.data.transation.transation_type == MS_INSUFFICIENT)
                         cout << "Falha ao realizar retirada\nSaldo "
-                            "insuficiente\n";
+                                "insuficiente\n";
                 }
                 break;
 
@@ -164,13 +173,18 @@ int main(int argc, char *argv[]) {
                 cin >> destination;
                 cout << "Insira o valor a ser transferido: ";
                 cin >> value;
+                if (value <= 0) {
+                    cout << "Insira um valor valido. ( Maior que zero )\n";
+                    break;
+                }
+
                 // Atribui informacoes na mensagem
                 msg.message_type = TRANSFERENCE;
                 msg.data.transfer.transation_type = MS_TRANSFERENCE;
                 msg.data.transfer.value = value;
 
                 memcpy(msg.data.transfer.destination_username, destination,
-                        MAX_USERWORD);
+                       MAX_USERWORD);
                 // Trata o caso de envio de dinheiro para o proprio usuario
                 if (strcmp(username, destination) == 0) {
                     cout << "Nao eh possivel enviar dinheiro para si proprio\n";
@@ -185,15 +199,15 @@ int main(int argc, char *argv[]) {
                 // insuficiente
                 if (msg.message_type == OK) {
                     cout << "Transferencia de " << value << " MC para "
-                        << destination << " realizada com sucesso!\n";
+                         << destination << " realizada com sucesso!\n";
                 } else {
                     if (msg.data.transation.transation_type == MS_INVALID_USER)
                         cout << "Falha ao realizar transferencia\nO usuario "
-                            << destination << " nao existe\n";
+                             << destination << " nao existe\n";
 
                     if (msg.data.transation.transation_type == MS_INSUFFICIENT)
                         cout << "Falha ao realizar transferência\nSaldo "
-                            "insuficiente\n";
+                                "insuficiente\n";
                 }
                 break;
 
@@ -214,7 +228,7 @@ int main(int argc, char *argv[]) {
                     cout << "Falha ao consultar saldo\n";
                 }
                 break;
-            
+
             // Tratamento de entradas invalidas
             default:
                 cout << "Insira uma operação válida...\n";
