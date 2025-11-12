@@ -1,0 +1,107 @@
+>> ./client 8080 santos Rui admin
+
+Cliente MiniCoin (MC)
+Autenticacao bem sucedida!
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 1
+Insira o valor para depositar: 10
+Deposito de 10.00 MC realizado com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 1
+Insira o valor para depositar: 20
+Deposito de 20.00 MC realizado com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 30.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 2
+Insira o valor para retirar: 15
+Retirada de 15.00 MC realizada com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 15.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 20.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 20.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 3
+Insira o username do destinatario (MAX: 20 char): Vini
+Insira o valor a ser transferido: 10
+Transferencia de 10.00 MC para Vini realizada com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 10.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 0
+Encerrando Cliente Minicoin

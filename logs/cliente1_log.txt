@@ -1,0 +1,93 @@
+>> ./client 8080 santos Vini admin1234
+
+Cliente MiniCoin (MC)
+Autenticacao bem sucedida!
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 1
+Insira o valor para depositar: 20
+Deposito de 20.00 MC realizado com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 2
+Insira o valor para retirar: 5
+Retirada de 5.00 MC realizada com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 15.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 3
+Insira o username do destinatario (MAX: 20 char): Rui
+Insira o valor a ser transferido: 5
+Transferencia de 5.00 MC para Rui realizada com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 3
+Insira o username do destinatario (MAX: 20 char): Rui
+Insira o valor a ser transferido: 25
+Falha ao realizar transferência
+Saldo insuficiente
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 3
+Insira o username do destinatario (MAX: 20 char): Pedro
+Insira o valor a ser transferido: 10
+Falha ao realizar transferencia
+O usuario Pedro nao existe
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 20.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 0
+Encerrando Cliente Minicoin
+
