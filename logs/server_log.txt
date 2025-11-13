@@ -1,46 +1,62 @@
+>> ./server 8080
+
 Server ouvindo na porta: 8080
 =======================================================================
   Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash SHA256)
 Inicio da execucao: log das transacoes feitas pelos clientes (usuarios)
  Ruibin Mei e Vinicius J. Santos - Disciplina Redes de Computadores II
 =======================================================================
-Cliente conectado: 127.0.0.1:39558
-[Tue Nov 11 22:07:45 2025]: Tentativa de Vini de autenticar...
+Cliente conectado: 10.254.223.58:49476
+[Thu Nov 13 11:42:15 2025]: Tentativa de Vini de autenticar...
 Novo usuario criado e autenticado | ID: 0
-Cliente conectado: 127.0.0.1:47128
-[Tue Nov 11 22:07:50 2025]: Tentativa de Rui de autenticar...
+Cliente conectado: 10.254.223.58:43610
+[Thu Nov 13 11:42:34 2025]: Cliente Vini [0] realizou uma acao de DEPOSITO no valor de 10.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.58:43616
+[Thu Nov 13 11:42:39 2025]: Cliente Vini [0] realizou uma acao de DEPOSITO no valor de 40.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.58:43620
+[Thu Nov 13 11:42:42 2025]: Cliente Vini [0] realizou uma consulta de saldo: 50.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.58:36642
+[Thu Nov 13 11:42:47 2025]: Cliente Vini [0] realizou uma acao de RETIRADA no valor de 25.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.58:36658
+[Thu Nov 13 11:42:50 2025]: Cliente Vini [0] realizou uma consulta de saldo: 25.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.73:39902
+[Thu Nov 13 11:43:07 2025]: Tentativa de Rui de autenticar...
 Novo usuario criado e autenticado | ID: 1
-Cliente conectado: 127.0.0.1:47136
-[Tue Nov 11 22:07:55 2025]: Cliente Vini [0] realizou uma acao de DEPOSITO no valor de 20.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:37232
-[Tue Nov 11 22:07:58 2025]: Cliente Rui [1] realizou uma acao de DEPOSITO no valor de 10.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:37234
-[Tue Nov 11 22:08:06 2025]: Cliente Vini [0] realizou uma acao de RETIRADA no valor de 5.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:39206
-[Tue Nov 11 22:08:08 2025]: Cliente Vini [0] realizou uma consulta de saldo: 15.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:39218
-[Tue Nov 11 22:08:14 2025]: Cliente Rui [1] realizou uma acao de DEPOSITO no valor de 20.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:39220
-[Tue Nov 11 22:08:16 2025]: Cliente Rui [1] realizou uma consulta de saldo: 30.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:56824
-[Tue Nov 11 22:08:19 2025]: Cliente Rui [1] realizou uma acao de RETIRADA no valor de 15.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:56832
-[Tue Nov 11 22:08:21 2025]: Cliente Rui [1] realizou uma consulta de saldo: 15.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:55374
-[Tue Nov 11 22:08:30 2025]: Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 5.00 MC para o cliente Rui [1]  | Codigo: OK
-Cliente conectado: 127.0.0.1:55382
-[Tue Nov 11 22:08:33 2025]: Cliente Rui [1] realizou uma consulta de saldo: 20.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:54574
-[Tue Nov 11 22:08:43 2025]: Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 25.00 MC para o cliente Rui [1]  | Codigo: SALDO INSUFICIENTE
-Cliente conectado: 127.0.0.1:57250
-[Tue Nov 11 22:08:52 2025]: Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 10.00 MC para o cliente Pedro [-1]  | Codigo: USUARIO NAO EXISTE
-Cliente conectado: 127.0.0.1:58880
-[Tue Nov 11 22:09:03 2025]: Cliente Rui [1] realizou uma consulta de saldo: 20.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:56746
-[Tue Nov 11 22:09:11 2025]: Cliente Rui [1] realizou uma acao de TRANSFERENCIA no valor de 10.00 MC para o cliente Vini [0]  | Codigo: OK
-Cliente conectado: 127.0.0.1:56752
-[Tue Nov 11 22:09:13 2025]: Cliente Rui [1] realizou uma consulta de saldo: 10.00 MC | Codigo: OK
-Cliente conectado: 127.0.0.1:56766
-[Tue Nov 11 22:09:14 2025]: Cliente Vini [0] realizou uma consulta de saldo: 20.00 MC | Codigo: OK
-
+Cliente conectado: 10.254.223.73:38998
+[Thu Nov 13 11:43:14 2025]: Cliente Rui [1] realizou uma acao de DEPOSITO no valor de 100.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.73:52358
+[Thu Nov 13 11:43:21 2025]: Cliente Rui [1] realizou uma acao de RETIRADA no valor de 40.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.73:52368
+[Thu Nov 13 11:43:24 2025]: Cliente Rui [1] realizou uma consulta de saldo: 60.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.58:57478
+[Thu Nov 13 11:43:31 2025]: Tentativa de Vini de autenticar...
+Usuario autenticado.
+Cliente conectado: 10.254.223.58:42310
+[Thu Nov 13 11:43:36 2025]: Cliente Vini [0] realizou uma consulta de saldo: 25.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.73:47230
+[Thu Nov 13 11:43:52 2025]: Cliente Rui [1] realizou uma acao de TRANSFERENCIA no valor de 25.00 MC para o cliente Vini [0]  | Codigo: OK
+Cliente conectado: 10.254.223.73:47232
+[Thu Nov 13 11:43:58 2025]: Cliente Rui [1] realizou uma consulta de saldo: 35.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.58:54426
+[Thu Nov 13 11:44:00 2025]: Cliente Vini [0] realizou uma consulta de saldo: 50.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.58:40592
+[Thu Nov 13 11:44:12 2025]: Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 15.00 MC para o cliente Rui [1]  | Codigo: OK
+Cliente conectado: 10.254.223.58:41036
+[Thu Nov 13 11:44:17 2025]: Cliente Vini [0] realizou uma consulta de saldo: 35.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.73:57270
+[Thu Nov 13 11:44:20 2025]: Cliente Rui [1] realizou uma consulta de saldo: 50.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.58:54328
+[Thu Nov 13 11:44:29 2025]: Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 10.00 MC para o cliente Pedro [-1]  | Codigo: USUARIO NAO EXISTE
+Cliente conectado: 10.254.223.58:40708
+[Thu Nov 13 11:44:41 2025]: Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 100.00 MC para o cliente Rui [1]  | Codigo: SALDO INSUFICIENTE
+Cliente conectado: 10.254.223.58:44358
+[Thu Nov 13 11:44:50 2025]: Cliente Vini [0] realizou uma consulta de saldo: 35.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.73:51992
+[Thu Nov 13 11:45:02 2025]: Cliente Rui [1] realizou uma acao de TRANSFERENCIA no valor de 50.00 MC para o cliente Vini [0]  | Codigo: OK
+Cliente conectado: 10.254.223.58:45684
+[Thu Nov 13 11:45:40 2025]: Cliente Vini [0] realizou uma consulta de saldo: 85.00 MC | Codigo: OK
+Cliente conectado: 10.254.223.58:45700
+[Thu Nov 13 11:45:43 2025]: Cliente Vini [0] realizou uma acao de DEPOSITO no valor de 15.00 MC | Codigo: OK
+^C
 Encerrando servidor...
+

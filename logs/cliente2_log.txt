@@ -1,4 +1,4 @@
->> ./client 8080 santos Rui admin
+>>./client 8080 h15 Rui senha1234
 
 Cliente MiniCoin (MC)
 Autenticacao bem sucedida!
@@ -9,29 +9,8 @@ Operacoes Disponiveis:
     3 - Realizar transferencia
     4 - Consultar saldo
 Insira uma operacao (numero): 1
-Insira o valor para depositar: 10
-Deposito de 10.00 MC realizado com sucesso!
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
-Insira uma operacao (numero): 1
-Insira o valor para depositar: 20
-Deposito de 20.00 MC realizado com sucesso!
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
-Insira uma operacao (numero): 4
-Saldo corrente: 30.00 MC
+Insira o valor para depositar: 100
+Deposito de 100.00 MC realizado com sucesso!
 
 
 Operacoes Disponiveis:
@@ -41,8 +20,8 @@ Operacoes Disponiveis:
     3 - Realizar transferencia
     4 - Consultar saldo
 Insira uma operacao (numero): 2
-Insira o valor para retirar: 15
-Retirada de 15.00 MC realizada com sucesso!
+Insira o valor para retirar: 40
+Retirada de 40.00 MC realizada com sucesso!
 
 
 Operacoes Disponiveis:
@@ -52,27 +31,7 @@ Operacoes Disponiveis:
     3 - Realizar transferencia
     4 - Consultar saldo
 Insira uma operacao (numero): 4
-Saldo corrente: 15.00 MC
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
-Insira uma operacao (numero): 4
-Saldo corrente: 20.00 MC
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
-Insira uma operacao (numero): 4
-Saldo corrente: 20.00 MC
+Saldo corrente: 60.00 MC
 
 
 Operacoes Disponiveis:
@@ -83,8 +42,8 @@ Operacoes Disponiveis:
     4 - Consultar saldo
 Insira uma operacao (numero): 3
 Insira o username do destinatario (MAX: 20 char): Vini
-Insira o valor a ser transferido: 10
-Transferencia de 10.00 MC para Vini realizada com sucesso!
+Insira o valor a ser transferido: 25
+Transferencia de 25.00 MC para Vini realizada com sucesso!
 
 
 Operacoes Disponiveis:
@@ -94,7 +53,29 @@ Operacoes Disponiveis:
     3 - Realizar transferencia
     4 - Consultar saldo
 Insira uma operacao (numero): 4
-Saldo corrente: 10.00 MC
+Saldo corrente: 35.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 50.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 3
+Insira o username do destinatario (MAX: 20 char): Vini
+Insira o valor a ser transferido: 50
+Transferencia de 50.00 MC para Vini realizada com sucesso!
 
 
 Operacoes Disponiveis:
@@ -105,3 +86,6 @@ Operacoes Disponiveis:
     4 - Consultar saldo
 Insira uma operacao (numero): 0
 Encerrando Cliente Minicoin
+
+
+
