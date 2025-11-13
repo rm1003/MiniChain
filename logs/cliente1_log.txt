@@ -1,5 +1,10 @@
 >> ./client 8080 h15 Vini senha123
 
+=======================================================================
+  Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash SHA256)
+Inicio da execucao: log das transacoes feitas pelos clientes (usuarios)
+ Ruibin Mei e Vinicius J. Santos - Disciplina Redes de Computadores II
+=======================================================================
 Cliente MiniCoin (MC)
 Autenticacao bem sucedida!
 Operacoes Disponiveis:
@@ -66,6 +71,11 @@ Encerrando Cliente Minicoin
 
 >> ./client 8080 h15 Vini senha123
 
+=======================================================================
+  Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash SHA256)
+Inicio da execucao: log das transacoes feitas pelos clientes (usuarios)
+ Ruibin Mei e Vinicius J. Santos - Disciplina Redes de Computadores II
+=======================================================================
 Cliente MiniCoin (MC)
 Autenticacao bem sucedida!
 Operacoes Disponiveis:

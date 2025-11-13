@@ -37,6 +37,18 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
+    cout << "=================================================================="
+            "=====\n"
+         << "  Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash "
+            "SHA256)\n"
+         << "Inicio da execucao: log das transacoes feitas pelos clientes "
+            "(usuarios)\n"
+         << " Ruibin Mei e Vinicius J. Santos - Disciplina Redes de "
+            "Computadores II\n"
+         << "=================================================================="
+            "=====\n";
+    cout << "Cliente MiniCoin (MC)\n";
+
     // Inicializacao do client e conecta o usuario com o servidor
     // =========================================================================
     ClientSocket *socket = new ClientSocket();
@@ -70,8 +82,6 @@ int main(int argc, char *argv[]) {
     // setup cout
     cout.setf(ios::fixed, ios::floatfield);
     cout.precision(2);
-
-    cout << "Cliente MiniCoin (MC)\n";
 
     // Login do Cliente
     if (msg.message_type == LOGIN) {
