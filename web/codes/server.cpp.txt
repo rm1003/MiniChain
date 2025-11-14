@@ -111,7 +111,7 @@ void transation(Message *msg) {
     if (blockchain->Insert(tr)) {
         msg->message_type = OK;
     } else {
-        // Se deu errado deve mandar um EROOR indicando para o cliente
+        // Se deu errado deve mandar um ERROR indicando para o cliente
         msg->message_type = ERROR;
         msg->data.transation.transation_type = MS_INSUFFICIENT;
     }
@@ -130,7 +130,7 @@ void transation(Message *msg) {
     cout << "Cliente " << users[client_id].username.c_str() << " [" << client_id
          << "]" << " realizou uma acao de " << op.c_str() << " no valor de "
          << value
-         << " MC | Codigo: " << ((msg->message_type == OK) ? "OK" : "ERRO")
+         << " MC | Codigo: " << ((msg->message_type == OK) ? "OK" : "ERRO: SALDO INSUFICIENTE")
          << '\n';
 }
 
@@ -168,7 +168,7 @@ void transfer(Message *msg) {
     if (!(found)) {
         msg->message_type = ERROR;
         msg->data.transation.transation_type = MS_INVALID_USER;
-        op = "USUARIO NAO EXISTE";
+        op = "ERRO: USUARIO NAO EXISTE";
         id = -1;
     } else {
         id = i;
@@ -182,7 +182,7 @@ void transfer(Message *msg) {
             // Caso saldo insuficiente, avisa o cliente com um erro
             msg->message_type = ERROR;
             msg->data.transation.transation_type = MS_INSUFFICIENT;
-            op = "SALDO INSUFICIENTE";
+            op = "ERRO: SALDO INSUFICIENTE";
         }
     }
 
