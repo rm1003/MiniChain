@@ -1,0 +1,129 @@
+>> ./client 8080 h15 Rui 123senha
+
+=======================================================================
+  Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash SHA256)
+Inicio da execucao: log das transacoes feitas pelos clientes (usuarios)
+ Ruibin Mei e Vinicius J. Santos - Disciplina Redes de Computadores II
+=======================================================================
+Cliente MiniCoin (MC)
+Autenticacao bem sucedida!
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 1
+Insira o valor para depositar: 20
+Deposito de 20.00 MC realizado com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 2
+Insira o valor para retirar: 20
+Retirada de 20.00 MC realizada com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 0.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 0.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 1
+Insira o valor para depositar: 50
+Deposito de 50.00 MC realizado com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 70.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 3
+Insira o username do destinatario (MAX: 20 char): Vini 
+Insira o valor a ser transferido: 200
+Falha ao realizar transferência
+Saldo insuficiente
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 3
+Insira o username do destinatario (MAX: 20 char): Vini
+Insira o valor a ser transferido: -10
+Insira um valor valido. ( Maior que zero )
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 3
+Insira o username do destinatario (MAX: 20 char): Vini
+Insira o valor a ser transferido: 70
+Transferencia de 70.00 MC para Vini realizada com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 0.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 0
+Encerrando Cliente Minicoin
+
+

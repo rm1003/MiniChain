@@ -1,0 +1,179 @@
+>> ./client 8080 h15 Vini senha123
+
+=======================================================================
+  Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash SHA256)
+Inicio da execucao: log das transacoes feitas pelos clientes (usuarios)
+ Ruibin Mei e Vinicius J. Santos - Disciplina Redes de Computadores II
+=======================================================================
+Cliente MiniCoin (MC)
+Autenticacao bem sucedida!
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 1
+Insira o valor para depositar: 10
+Deposito de 10.00 MC realizado com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 2
+Insira o valor para retirar: 7
+Retirada de 7.00 MC realizada com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 3.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 1
+Insira o valor para depositar: -10
+Insira um valor valido. ( Maior que zero )
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 2
+Insira o valor para retirar: -20
+Insira um valor valido. ( Maior que zero )
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 0
+Encerrando Cliente Minicoin
+
+
+>> ./client 8080 h15 Vini senha123
+
+=======================================================================
+  Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash SHA256)
+Inicio da execucao: log das transacoes feitas pelos clientes (usuarios)
+ Ruibin Mei e Vinicius J. Santos - Disciplina Redes de Computadores II
+=======================================================================
+Cliente MiniCoin (MC)
+Autenticacao bem sucedida!
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 3.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 1
+Insira o valor para depositar: 97
+Deposito de 97.00 MC realizado com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 100.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 3
+Insira o username do destinatario (MAX: 20 char): Rui
+Insira o valor a ser transferido: 20
+Transferencia de 20.00 MC para Rui realizada com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 3
+Insira o username do destinatario (MAX: 20 char): Pedro
+Insira o valor a ser transferido: 10
+Falha ao realizar transferencia
+O usuario Pedro nao existe
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 150.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 2
+Insira o valor para retirar: 150
+Retirada de 150.00 MC realizada com sucesso!
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 4
+Saldo corrente: 0.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 0
+Encerrando Cliente Minicoin
+
+

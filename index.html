@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Trabalho de Redes II </title>
+    <link rel="stylesheet" href="./web/style.css">
+</head>
+<body>
+    <div class="title"> 
+        <h2>Trabalho Prático de Redes de Computadores II </h2>
+        <h3>Universidade Federal do Paraná</h3>
+        <h3>Departamento de Informática</h3>
+        <h3>Bacharelado em Ciência da Computação</h3>
+        <h3>Ruibin Mei e Vinícius Jeremias dos Santos</h3>
+    </div>
+    <div class="content">
+        <div>
+            <h2> Relatório </h2>
+            Aqui está o <a href="./relatorio.txt"><b>Relatório</b></a>
+        </div>
+        <div>
+            <h2> Organização do Trabalho </h2>
+            <pre class="tree">
+            /
+            ├── <a href="./web/codes/Makefile.txt">Makefile</a>
+            └── src
+                ├── <a href="./web/codes/Blockchain.hpp.txt">Blockchain.hpp</a>
+                ├── <a href="./web/codes/CustomSocket.hpp.txt">CustomSocket.hpp</a>
+                ├── <a href="./web/codes/picosha2.hpp.txt">picosha2.hpp</a>
+                ├── client
+                │   └── <a href="./web/codes/client.cpp.txt">client.cpp</a>
+                └── server
+                    └── <a href="./web/codes/server.cpp.txt">server.cpp</a>
+            </pre>
+            <ul style="padding-left: 24px; line-height: 1.55;">
+                <h3> Comando de execução: </h3>
+                <p> make </p>
+                <p>./server &ltport&gt </p>
+                <p>./client &ltport&gt &lthostname&gt &ltusername&gt &ltpassword&gt</p>
+            </ul>
+        </div>
+        <div>
+            <h2> Resumo Rápido </h2>
+            <ul style="padding-left: 24px; line-height: 1.55;">
+                <li>
+                    <strong>client.cpp:</strong> 
+                    Este arquivo implementa o cliente que iterage com o servidor.
+                    <br><strong>Funções principais:</strong>
+                    Fazendo operações de encerrar conexão, depositar, retirar, realizar transferência e consultar saldo.
+                </li>
+                <li>
+                    <strong>server.cpp:</strong> 
+                    Este arquivo implementa o servidor responsável por autenticar usuários, gerenciar a blockchain e processar requisições.
+                    <br><strong>Funções principais:</strong> 
+                    <code>authenticate()</code>, <code>transation()</code>, <code>transfer()</code>, <code>query()</code>.
+                </li>
+                <li>
+                    <strong>Blockchain.hpp:</strong> 
+                    Este arquivo contém toda a lógica da blockchain usada pelo servidor, incluindo estrutura dos blocos e verificação de integridade.
+                    <br><strong>Funções principais:</strong> 
+                    <code>Insert()</code>, <code>GetUserBalance()</code>, <code>VerifyBlockchainIntegrity()</code>, <code>CheckHash()</code>.
+                </li>
+                <li>
+                    <strong>CustomSocket.hpp:</strong> 
+                    Biblioteca personalizada que abstrai o uso de sockets, facilitando envio e recebimento de mensagens.
+                    <br><strong>Funções principais:</strong> 
+                    <code>sendData()</code>, <code>receiveData()</code>, além dos métodos de inicialização e conexão do socket.
+                </li>
+                <li>
+                    <strong>picosha2.hpp:</strong>
+                    Biblioteca para geração de hashes SHA-256 usada na autenticação e na blockchain.
+                    <br><strong>Função principal:</strong> 
+                    <code>hash256_hex_string()</code>.
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2> Logs de Execução </h2>
+            <ul style="padding-left: 24px; line-height: 1.55;">
+                <li>
+                    <a href="./logs/server_log.txt"><b>server_log.txt</b></a>: Mostra todas informações do bloco registrado. Timestamp, hash, nome do cliente + id, tipo de ação realizada, valor em MC (MiniCoins) e Código de erro (OK, Saldo insuficiente e Usuário Não Existente)
+                </li>
+                <li>
+                    <a href="./logs/cliente1_log.txt"><b>cliente1_log.txt</b></a>: Mostra a interface de interação com usuário 1, tipo de operação que está realizando, valor em MC e mensagem de sucesso ou erro na operação.
+                </li>
+                <li>
+                    <a href="./logs/cliente2_log.txt"><b>cliente2_log.txt</b></a>: Mostra a interface de interação com usuário 2, tipo de operação que está realizando, valor em MC e mensagem de sucesso ou erro na operação.
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2> Diagrama com Fluxo de Execução Simples </h2>
+            <img src="./web/fluxo.png" alt="Diagrama do sistema">
+        </div>
+        <div>
+            <h2> Referências </h2>
+            <ul style="padding-left: 24px; line-height: 1.55;">
+                <li><a href="https://github.com/okdshin/PicoSHA2/tree/master">GitHub PicoSHA2</a>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,173 @@
+1. Introdução
+    Este trabalho apresenta uma implementação de um sistema de moeda virtual
+com tentativa de aproximar com a ideia de BitCoins, chamado de MiniCoins,
+utilizando o sistema cliente-servidor com uso de Blockchain para garantir a
+integridade e segurança das transações financeiras dos clientes. O sistema é
+composto por um servidor central que gerencia a Blockchain personalizada e
+múltiplos clientes que interagem com o sistema por meio de uma interface de
+linha de comando no terminal.
+
+2. Convenções de Implementação Adotadas
+
+2.1 Convenções
+    Ficou definido o uso de C++ como linguagem de programação seguindo o paradigma
+de programação orientado a objetos para este trabalho. Com o modelo cliente-servidor,
+a comunicação é estabelecida através de sockets TCP, utilizando uma estrutura de
+mensagens padronizada para todas as operações feitas pelo cliente. E utilizando
+hashes SHA-256 para a integridade da blockchain e autenticação do usuário.
+    Definimos o uso da biblioteca "picosha2.hpp" para criptografia hash SHA-256
+presente nesse github: https://github.com/okdshin/PicoSHA2/tree/master, devido
+a ausência de dependências de pacotes instalados, por exemplo a biblioteca openssl
+precisa que "libssl-dev" esteja instalado no sistema, assim o uso do "picosha2.hpp"
+é mais flexível, sem dependências.
+
+2.2 Decisões de Projeto
+    As implementações da Blockchain.hpp e CustomSocket.hpp ficaram como header-only
+devido a escopo do projeto ser menor, e queriamos implementar uma ideia de em
+específico as funções tanto da blockchain quanto do socket serem "APIs", ou seja,
+em outras palavras, eles são funções de bibliotecas chamados pelo programa principal
+client.cpp e server.cpp.
+
+2.2.1 client.cpp
+    - Múltiplos clientes.
+    - A conexão é estabelecida e fechada a cada operação.
+    - A senha é hasheada localmente antes de enviar para o servidor.
+    - Menu interativo que mantém o cliente ativo até decisão/intenção de saída.
+    - Validação básica no cliente (valores positivos no deposito, evitar
+transferência para si mesmo).
+
+2.2.2 server.cpp
+    - Autenticação (username e senha) do cliente/usuário é feito no servidor.
+    - Todas as operações são registradas com timestamps detalhadas.
+
+2.2.3 Blockchain.hpp
+    - A blockchain foi implementada como uma lista ligada simples.
+    - A integridade de toda a cadeia é verificada a cada nova inserção, garantindo
+que a blockchain esteja correta.
+    - Para obter o saldo do cliente, sempre percorre iterando por toda a blockchain.
+    - Contém as informações em cada bloco: id do cliente, id do destinatário, valor,
+tipo da transação, timestamp, hash atual e hash anterior.
+
+2.2.4 CustomSocket.hpp
+    - Implementada como Template para permitir reutilização com diferentes tipos
+de mensagens.
+    - API de mandar dados "sendData()"
+    - API de receber dados "receiveData()"
+
+2.2.5 picosha2.hpp
+    - Uma biblioteca Header-only que não possui dependências externas.
+    - Sua implementação segue o algoritmo original SHA-256, produzindo hashes de
+256 bits.
+
+2.3 Dificuldades Encontrados na Implementação
+    Algumas dificuldades ao decorrer do desenvoldimento do trabalho:
+    - Planejamento geral do trabalho, foi necessário ao decorrer do tempo ir
+trocando algumas decisões para que o trabalho ficasse do jeito que gostariamos. Por
+exemplo a escolha da biblioteca de criptografia hash, a ideia inicial foi utilizar
+a lib OpenSSl, depois foi mudado para Crypto++ e por fim definimos usar PicoSHA2.
+    - Planejar as classes Pai e Filho, e a estrutura da mensagem do CustomSocket.
+    - Definir como identificamos os usuário, inicialmente a ideia era usar um ID
+para cada usuário distinto, mas para a implementação da operação de transferência,
+adotamos uma forma de obter o próprio ID e o ID de outro cliente utilizando o
+username de cada conta, o servidor mantém uma lista de clientes com seus respectivos
+username e senha com hash, atribuíndo um ID único para cada usuário.
+
+
+3. Registro dos Encontros Para o Desenvolvimento do Trabalho
+
+3.1 Meios utilizados
+    Para o desenvolvimento do trabalho foi realizado de forma híbrida, sendo a
+parte remota utilizando Discord para videochamadas e trocas de Mensagens pelo
+WhatsApp para discutir ideias e definições da estrutura inicial do projeto. Já
+na implementação do código, a maior parte foi feito de forma presencial,
+aproveitando a programação em conjunto para ambos conseguirem acompanhar o fluxo
+de programação e ter ideia do que está sendo feito até aquele momento.
+
+3.2 Registros dos Encontros
+01/11/2025
+    Definição inicial da estrutura do projeto:
+        - Linguagem C++ usando Programação Orientado a Objetos.
+        - Usar biblioteca openssl para hash (sha256)
+
+02/11/2025
+    (LinkedList.hpp)
+    Implementação da classe lista ligada e definimos a utilização de Template
+para deixar a lista genérica.
+
+03/11/2025
+    (CustomSocket.hpp)
+    Trabalhamos na implementação da classe Socket do servidor e do cliente, 
+desenvolvendo os métodos de inicialização do servidor.
+
+04/11/2025
+    (CustomSocket.hpp)
+    Terminando a implementação básica da classe socket do servidor e cliente, 
+adicionando a classe pai customSocket contendo os métodos genéricos (APIs) de
+envio e recebimento de dados.
+
+05/11/2025
+    (LinkedList.hpp -> BlockChain.hpp)
+    Alteração na estrutura da lista ligada para ser específico no uso de blockchain.
+Definindo quais métodos e quais informações devem conter dentro do registro (bloco)
+
+06/11/2025
+    (BlockChain.hpp e CustomSocker.hpp)
+    Código refatorado, a lista ligada genérica foi transformada em uma lista 
+específica onde os nodos são os blocos da blockchain. 
+    Além disto, a classe CustomSocket foi alterada para ser uma classe template,
+ou seja, é possível definir um tipo específico de mensagem enviada pelo socket, 
+aumentando a modularidade e legibilidade do código.
+
+07/11/2025
+    (CustomSocket.hpp - BlockChain.hpp - Server.cpp - Client.cpp)
+    A classe ClientSocket foi alterada para suportar a execução do processo 
+cliente sem a necessidade de executar o programa novamente para realizar uma 
+operação. Agora, o cliente se mantém rodando enquanto o usuário não 
+encerrar sua execução. 
+    Para se comunicar com o servidor, um socket é criado para cada operação e 
+destruído logo em seguida ao termino da transação.
+    Implementação dos métodos de inserir na blockchain verificando as hashes dos
+blocos, o servidor além de inserir, retorna mensagens para os clientes informando
+o status da operação.
+    Lógica de execução do cliente e do servidor concluídas.
+
+09/11/2025
+    (Server.cpp - Client.cpp)
+    Foi modificado partes do código trocando printf para cout do c++. Adicionando
+a função hash SHA256 da biblioteca crypto++ para ser usado no blockchain.
+    Possivel problema para usar a biblioteca necessitando o download:
+        - sudo apt install libcrypto++-dev
+    Referência:
+    https://stackoverflow.com/questions/5930056/generating-a-sha256-hash-with-crypto-using-a-string-as-input-and-output
+
+10/11/2025
+    (Server.cpp - Client.cpp - BlockChain.hpp)    
+    Correção de saída de notação científica do cout, fixando a precisão do float
+para duas casas decimais.
+    Mudança na biblioteca e na função hash SHA256, foi adicionado a biblioteca
+picosha2.hpp na qual contém as funções de cálculo da criptografia SHA-256 que é
+utilizado para a hash da blockchain. 
+    A ideia de adicionar essa biblioteca está em tirar a dependência da necessidade
+de fazer download da biblioteca (versão anterior usando crypto++ ou usando a lib
+openssl).
+    A estrutura de mensagem e transação foram alteradas para suportar a operação
+de transferência de Minicoins de um cliente para outro, também foram implementadas
+as funções para esse procedimento, permitindo que um usuário envie parte de seu
+saldo para outro cliente desde que saiba seu username.
+Adicionada a verificação de integridade da Blockchain para cada operação de inserção.
+    Referência:
+    https://github.com/okdshin/PicoSHA2/tree/master
+
+14/11/2025
+    Foi feito testes nas maquinas do lab12, sendo uma máquina como servidor
+contendo a Blockchain e duas máquinas para simular dois clientes/usuários fazendo
+as requisições para o servidor.
+
+4. Resultados Obtidos
+    Obtivemos uma aplicação Cliente Servidor que possui uma implementação 
+simplificada de uma Blockchain, verificando a integridade da Blockchain e de suas
+transações para cada nova operação e novo bloco a ser inserido.
+    O servidor suporta múltiplos clientes "ao mesmo tempo" e possui uma lógica
+interna que atribui um ID para cada cliente e seu username, dessa forma, enquanto
+o servidor se mantiver em execução, um cliente pode encerrar sua conexão e se conectar
+novamente em outro momento e ainda acessar seu saldo de MiniCoins(MC).
