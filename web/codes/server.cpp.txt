@@ -231,6 +231,7 @@ void handler(Message *msg) {
     } else {
         query(msg);
     }
+    cout << "\n\n";
 }
 
 int main(int argc, char *argv[]) {
@@ -251,16 +252,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    s_socket = new ServerSocket();
-    blockchain = new Blockchain(&hashFunction);
-
-    s_socket->init(atoi(argv[1]));
-    s_socket->listenForConnection();
-
-    // setup cout
-    cout.setf(ios::fixed, ios::floatfield);
-    cout.precision(2);
-
     cout << "=================================================================="
             "=====\n"
          << "  Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash "
@@ -271,6 +262,16 @@ int main(int argc, char *argv[]) {
             "Computadores II\n"
          << "=================================================================="
             "=====\n";
+
+    s_socket = new ServerSocket();
+    blockchain = new Blockchain(&hashFunction);
+
+    s_socket->init(atoi(argv[1]));
+    s_socket->listenForConnection();
+
+    // setup cout
+    cout.setf(ios::fixed, ios::floatfield);
+    cout.precision(2);
 
     // Aceita a conexao do cliente
     // Recebe os dados mandados pelo cliente

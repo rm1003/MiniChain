@@ -141,6 +141,12 @@ class Blockchain {
             // Faz a criptografia da string
             new_block->actual_hash = ComputeHash(data_to_hash);
 
+            cout << "=== NOVO BLOCO INSERIDO ===\n";
+            cout << "Previous Hash: " << new_block->prev_hash << '\n';
+            cout << "Current Hash: " << new_block->actual_hash << '\n';
+            cout << "===========================\n";
+
+
             // Se for inicio coloca na cabeca da lista se nao coloca no final
             if (this->tail == nullptr) {
                 this->head = new_block;
