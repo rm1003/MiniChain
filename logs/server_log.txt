@@ -1,62 +1,141 @@
 >> ./server 8080
 
-Server ouvindo na porta: 8080
 =======================================================================
   Moeda Virtual - MiniCoin - Usando BlockChain (lista com hash SHA256)
 Inicio da execucao: log das transacoes feitas pelos clientes (usuarios)
  Ruibin Mei e Vinicius J. Santos - Disciplina Redes de Computadores II
 =======================================================================
-Cliente conectado: 10.254.223.58:49476
-[Thu Nov 13 11:42:15 2025]: Tentativa de Vini de autenticar...
+Server ouvindo na porta: 8080
+Cliente conectado: 10.254.223.58:36636
+[Fri Nov 14 11:06:17 2025]: Tentativa de Vini de autenticar...
 Novo usuario criado e autenticado | ID: 0
-Cliente conectado: 10.254.223.58:43610
-[Thu Nov 13 11:42:34 2025]: Cliente Vini [0] realizou uma acao de DEPOSITO no valor de 10.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.58:43616
-[Thu Nov 13 11:42:39 2025]: Cliente Vini [0] realizou uma acao de DEPOSITO no valor de 40.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.58:43620
-[Thu Nov 13 11:42:42 2025]: Cliente Vini [0] realizou uma consulta de saldo: 50.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.58:36642
-[Thu Nov 13 11:42:47 2025]: Cliente Vini [0] realizou uma acao de RETIRADA no valor de 25.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.58:36658
-[Thu Nov 13 11:42:50 2025]: Cliente Vini [0] realizou uma consulta de saldo: 25.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.73:39902
-[Thu Nov 13 11:43:07 2025]: Tentativa de Rui de autenticar...
+
+
+Cliente conectado: 10.254.223.58:36648
+=== NOVO BLOCO INSERIDO ===
+Previous Hash: 548c163c3cc02feae127bd62b9666c12fe1b2ef22fdf3287ad788c53f95aabe9
+Current Hash: b0a06cce00307f5936d72bc16041eca50771a918035fb0d7db9440dd3b99f3aa
+===========================
+[Fri Nov 14 11:06:20 2025]: Cliente Vini [0] realizou uma acao de DEPOSITO no valor de 10.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.58:44494
+=== NOVO BLOCO INSERIDO ===
+Previous Hash: b0a06cce00307f5936d72bc16041eca50771a918035fb0d7db9440dd3b99f3aa
+Current Hash: 9c0bc473c87a50b3dc4a758f4807678f21307593f4aa11668444bac80a1ad052
+===========================
+[Fri Nov 14 11:06:25 2025]: Cliente Vini [0] realizou uma acao de RETIRADA no valor de 7.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.58:44498
+[Fri Nov 14 11:06:27 2025]: Cliente Vini [0] realizou uma consulta de saldo: 3.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.73:52372
+[Fri Nov 14 11:06:41 2025]: Tentativa de Rui de autenticar...
 Novo usuario criado e autenticado | ID: 1
-Cliente conectado: 10.254.223.73:38998
-[Thu Nov 13 11:43:14 2025]: Cliente Rui [1] realizou uma acao de DEPOSITO no valor de 100.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.73:52358
-[Thu Nov 13 11:43:21 2025]: Cliente Rui [1] realizou uma acao de RETIRADA no valor de 40.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.73:52368
-[Thu Nov 13 11:43:24 2025]: Cliente Rui [1] realizou uma consulta de saldo: 60.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.58:57478
-[Thu Nov 13 11:43:31 2025]: Tentativa de Vini de autenticar...
+
+
+Cliente conectado: 10.254.223.73:52386
+=== NOVO BLOCO INSERIDO ===
+Previous Hash: 9c0bc473c87a50b3dc4a758f4807678f21307593f4aa11668444bac80a1ad052
+Current Hash: b8bb1ce9a907b7a14e7949768a143d744d50eba8a678478468b7cdb10f86aeeb
+===========================
+[Fri Nov 14 11:06:45 2025]: Cliente Rui [1] realizou uma acao de DEPOSITO no valor de 20.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.73:42238
+=== NOVO BLOCO INSERIDO ===
+Previous Hash: b8bb1ce9a907b7a14e7949768a143d744d50eba8a678478468b7cdb10f86aeeb
+Current Hash: 24475f6e868744e1de67a07e889566be6052abc6effc6a9c5916aea44d4b601d
+===========================
+[Fri Nov 14 11:06:48 2025]: Cliente Rui [1] realizou uma acao de RETIRADA no valor de 20.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.73:42248
+[Fri Nov 14 11:06:50 2025]: Cliente Rui [1] realizou uma consulta de saldo: 0.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.58:59608
+[Fri Nov 14 11:06:56 2025]: Tentativa de Vini de autenticar...
 Usuario autenticado.
-Cliente conectado: 10.254.223.58:42310
-[Thu Nov 13 11:43:36 2025]: Cliente Vini [0] realizou uma consulta de saldo: 25.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.73:47230
-[Thu Nov 13 11:43:52 2025]: Cliente Rui [1] realizou uma acao de TRANSFERENCIA no valor de 25.00 MC para o cliente Vini [0]  | Codigo: OK
-Cliente conectado: 10.254.223.73:47232
-[Thu Nov 13 11:43:58 2025]: Cliente Rui [1] realizou uma consulta de saldo: 35.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.58:54426
-[Thu Nov 13 11:44:00 2025]: Cliente Vini [0] realizou uma consulta de saldo: 50.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.58:40592
-[Thu Nov 13 11:44:12 2025]: Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 15.00 MC para o cliente Rui [1]  | Codigo: OK
-Cliente conectado: 10.254.223.58:41036
-[Thu Nov 13 11:44:17 2025]: Cliente Vini [0] realizou uma consulta de saldo: 35.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.73:57270
-[Thu Nov 13 11:44:20 2025]: Cliente Rui [1] realizou uma consulta de saldo: 50.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.58:54328
-[Thu Nov 13 11:44:29 2025]: Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 10.00 MC para o cliente Pedro [-1]  | Codigo: USUARIO NAO EXISTE
-Cliente conectado: 10.254.223.58:40708
-[Thu Nov 13 11:44:41 2025]: Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 100.00 MC para o cliente Rui [1]  | Codigo: SALDO INSUFICIENTE
-Cliente conectado: 10.254.223.58:44358
-[Thu Nov 13 11:44:50 2025]: Cliente Vini [0] realizou uma consulta de saldo: 35.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.73:51992
-[Thu Nov 13 11:45:02 2025]: Cliente Rui [1] realizou uma acao de TRANSFERENCIA no valor de 50.00 MC para o cliente Vini [0]  | Codigo: OK
-Cliente conectado: 10.254.223.58:45684
-[Thu Nov 13 11:45:40 2025]: Cliente Vini [0] realizou uma consulta de saldo: 85.00 MC | Codigo: OK
-Cliente conectado: 10.254.223.58:45700
-[Thu Nov 13 11:45:43 2025]: Cliente Vini [0] realizou uma acao de DEPOSITO no valor de 15.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.58:34606
+[Fri Nov 14 11:07:12 2025]: Cliente Vini [0] realizou uma consulta de saldo: 3.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.58:41402
+=== NOVO BLOCO INSERIDO ===
+Previous Hash: 24475f6e868744e1de67a07e889566be6052abc6effc6a9c5916aea44d4b601d
+Current Hash: df63146e88eff0f7439cc3f9ea6102a94146bad19c1259c6eab1f10781c4958a
+===========================
+[Fri Nov 14 11:07:16 2025]: Cliente Vini [0] realizou uma acao de DEPOSITO no valor de 97.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.58:41408
+[Fri Nov 14 11:07:19 2025]: Cliente Vini [0] realizou uma consulta de saldo: 100.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.73:59602
+[Fri Nov 14 11:07:21 2025]: Cliente Rui [1] realizou uma consulta de saldo: 0.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.73:59610
+=== NOVO BLOCO INSERIDO ===
+Previous Hash: df63146e88eff0f7439cc3f9ea6102a94146bad19c1259c6eab1f10781c4958a
+Current Hash: 01d52c6ee0830ac1c446eaa9dda63575ad2f7747372b4d251e6dc8983bfadef0
+===========================
+[Fri Nov 14 11:07:25 2025]: Cliente Rui [1] realizou uma acao de DEPOSITO no valor de 50.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.58:44596
+[Fri Nov 14 11:07:32 2025]: === NOVO BLOCO INSERIDO ===
+Previous Hash: 01d52c6ee0830ac1c446eaa9dda63575ad2f7747372b4d251e6dc8983bfadef0
+Current Hash: ecebbc8015b0ceaf3dd0b28db637211e242a94a21ec7d45654d9a8d0b3af89fb
+===========================
+Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 20.00 MC para o cliente Rui [1]  | Codigo: OK
+
+
+Cliente conectado: 10.254.223.73:45026
+[Fri Nov 14 11:07:38 2025]: Cliente Rui [1] realizou uma consulta de saldo: 70.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.73:45030
+[Fri Nov 14 11:07:48 2025]: Cliente Rui [1] realizou uma acao de TRANSFERENCIA no valor de 200.00 MC para o cliente Vini [0]  | Codigo: ERRO: SALDO INSUFICIENTE
+
+
+Cliente conectado: 10.254.223.58:51494
+[Fri Nov 14 11:08:08 2025]: Cliente Vini [0] realizou uma acao de TRANSFERENCIA no valor de 10.00 MC para o cliente Pedro [-1]  | Codigo: ERRO: USUARIO NAO EXISTE
+
+
+Cliente conectado: 10.254.223.73:41708
+[Fri Nov 14 11:08:26 2025]: === NOVO BLOCO INSERIDO ===
+Previous Hash: ecebbc8015b0ceaf3dd0b28db637211e242a94a21ec7d45654d9a8d0b3af89fb
+Current Hash: 3bed7fcbc7c66a89cfa290f6a6acba7524641431c923f5c86bf8237b3e0953ec
+===========================
+Cliente Rui [1] realizou uma acao de TRANSFERENCIA no valor de 70.00 MC para o cliente Vini [0]  | Codigo: OK
+
+
+Cliente conectado: 10.254.223.73:45398
+[Fri Nov 14 11:08:28 2025]: Cliente Rui [1] realizou uma consulta de saldo: 0.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.58:36972
+[Fri Nov 14 11:08:32 2025]: Cliente Vini [0] realizou uma consulta de saldo: 150.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.58:40018
+=== NOVO BLOCO INSERIDO ===
+Previous Hash: 3bed7fcbc7c66a89cfa290f6a6acba7524641431c923f5c86bf8237b3e0953ec
+Current Hash: 07dda54e0211eee1cae9c19802d263a493e85eae926db28d71f0e7de421718ae
+===========================
+[Fri Nov 14 11:08:36 2025]: Cliente Vini [0] realizou uma acao de RETIRADA no valor de 150.00 MC | Codigo: OK
+
+
+Cliente conectado: 10.254.223.58:40034
+[Fri Nov 14 11:08:38 2025]: Cliente Vini [0] realizou uma consulta de saldo: 0.00 MC | Codigo: OK
+
+
 ^C
 Encerrando servidor...
-

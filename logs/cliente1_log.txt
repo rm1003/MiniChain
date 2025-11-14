@@ -24,9 +24,9 @@ Operacoes Disponiveis:
     2 - Retirar
     3 - Realizar transferencia
     4 - Consultar saldo
-Insira uma operacao (numero): 1
-Insira o valor para depositar: 40
-Deposito de 40.00 MC realizado com sucesso!
+Insira uma operacao (numero): 2
+Insira o valor para retirar: 7
+Retirada de 7.00 MC realizada com sucesso!
 
 
 Operacoes Disponiveis:
@@ -36,7 +36,18 @@ Operacoes Disponiveis:
     3 - Realizar transferencia
     4 - Consultar saldo
 Insira uma operacao (numero): 4
-Saldo corrente: 50.00 MC
+Saldo corrente: 3.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 1
+Insira o valor para depositar: -10
+Insira um valor valido. ( Maior que zero )
 
 
 Operacoes Disponiveis:
@@ -46,18 +57,8 @@ Operacoes Disponiveis:
     3 - Realizar transferencia
     4 - Consultar saldo
 Insira uma operacao (numero): 2
-Insira o valor para retirar: 25
-Retirada de 25.00 MC realizada com sucesso!
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
-Insira uma operacao (numero): 4
-Saldo corrente: 25.00 MC
+Insira o valor para retirar: -20
+Insira um valor valido. ( Maior que zero )
 
 
 Operacoes Disponiveis:
@@ -68,6 +69,7 @@ Operacoes Disponiveis:
     4 - Consultar saldo
 Insira uma operacao (numero): 0
 Encerrando Cliente Minicoin
+
 
 >> ./client 8080 h15 Vini senha123
 
@@ -85,7 +87,18 @@ Operacoes Disponiveis:
     3 - Realizar transferencia
     4 - Consultar saldo
 Insira uma operacao (numero): 4
-Saldo corrente: 25.00 MC
+Saldo corrente: 3.00 MC
+
+
+Operacoes Disponiveis:
+    0 - Encerrar programa
+    1 - Depositar
+    2 - Retirar
+    3 - Realizar transferencia
+    4 - Consultar saldo
+Insira uma operacao (numero): 1
+Insira o valor para depositar: 97
+Deposito de 97.00 MC realizado com sucesso!
 
 
 Operacoes Disponiveis:
@@ -95,7 +108,7 @@ Operacoes Disponiveis:
     3 - Realizar transferencia
     4 - Consultar saldo
 Insira uma operacao (numero): 4
-Saldo corrente: 50.00 MC
+Saldo corrente: 100.00 MC
 
 
 Operacoes Disponiveis:
@@ -106,18 +119,8 @@ Operacoes Disponiveis:
     4 - Consultar saldo
 Insira uma operacao (numero): 3
 Insira o username do destinatario (MAX: 20 char): Rui
-Insira o valor a ser transferido: 15
-Transferencia de 15.00 MC para Rui realizada com sucesso!
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
-Insira uma operacao (numero): 4
-Saldo corrente: 35.00 MC
+Insira o valor a ser transferido: 20
+Transferencia de 20.00 MC para Rui realizada com sucesso!
 
 
 Operacoes Disponiveis:
@@ -139,32 +142,8 @@ Operacoes Disponiveis:
     2 - Retirar
     3 - Realizar transferencia
     4 - Consultar saldo
-Insira uma operacao (numero): 3
-Insira o username do destinatario (MAX: 20 char): Rui
-Insira o valor a ser transferido: 100
-Falha ao realizar transferência
-Saldo insuficiente
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
 Insira uma operacao (numero): 4
-Saldo corrente: 35.00 MC
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
-Insira uma operacao (numero): 1
-Insira o valor para depositar: -10
-Insira um valor valido. ( Maior que zero )
+Saldo corrente: 150.00 MC
 
 
 Operacoes Disponiveis:
@@ -174,30 +153,8 @@ Operacoes Disponiveis:
     3 - Realizar transferencia
     4 - Consultar saldo
 Insira uma operacao (numero): 2
-Insira o valor para retirar: -10
-Insira um valor valido. ( Maior que zero )
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
-Insira uma operacao (numero): -3
-Insira uma operação válida...
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
-Insira uma operacao (numero): 3
-Insira o username do destinatario (MAX: 20 char): Rui
-Insira o valor a ser transferido: -20
-Insira um valor valido. ( Maior que zero )
+Insira o valor para retirar: 150
+Retirada de 150.00 MC realizada com sucesso!
 
 
 Operacoes Disponiveis:
@@ -207,18 +164,7 @@ Operacoes Disponiveis:
     3 - Realizar transferencia
     4 - Consultar saldo
 Insira uma operacao (numero): 4
-Saldo corrente: 85.00 MC
-
-
-Operacoes Disponiveis:
-    0 - Encerrar programa
-    1 - Depositar
-    2 - Retirar
-    3 - Realizar transferencia
-    4 - Consultar saldo
-Insira uma operacao (numero): 1
-Insira o valor para depositar: 15
-Deposito de 15.00 MC realizado com sucesso!
+Saldo corrente: 0.00 MC
 
 
 Operacoes Disponiveis:
@@ -229,6 +175,5 @@ Operacoes Disponiveis:
     4 - Consultar saldo
 Insira uma operacao (numero): 0
 Encerrando Cliente Minicoin
-
 
 
