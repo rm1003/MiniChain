@@ -23,7 +23,7 @@ char *protectPassword(const char *data_to_hash) {
 };
 
 int main(int argc, char *argv[]) {
-    int op;
+    int op, ret, c;
     double value;
     unsigned long int id = 0;
     char destination[MAX_USERWORD + 1];
@@ -125,7 +125,15 @@ int main(int argc, char *argv[]) {
             // Caso de deposito
             case 1:
                 cout << "Insira o valor para depositar: ";
-                cin >> value;
+
+                ret = scanf("%lf", &value);
+                if (ret <= 0) {
+                    while ((c = getchar() != '\n') && c != EOF);
+                    cout << "Insira um valor valido. ( Numero )\n";
+
+                    break;
+                }
+
                 if (value <= 0) {
                     cout << "Insira um valor valido. ( Maior que zero )\n";
                     break;
@@ -151,7 +159,15 @@ int main(int argc, char *argv[]) {
             // Caso de retirar algum valor do saldo total
             case 2:
                 cout << "Insira o valor para retirar: ";
-                cin >> value;
+
+                ret = scanf("%lf", &value);
+                if (ret <= 0) {
+                    while ((c = getchar() != '\n') && c != EOF);
+                    cout << "Insira um valor valido. ( Numero )\n";
+
+                    break;
+                }
+
                 if (value <= 0) {
                     cout << "Insira um valor valido. ( Maior que zero )\n";
                     break;
@@ -182,7 +198,15 @@ int main(int argc, char *argv[]) {
                 cout << "Insira o username do destinatario (MAX: 20 char): ";
                 cin >> destination;
                 cout << "Insira o valor a ser transferido: ";
-                cin >> value;
+
+                ret = scanf("%lf", &value);
+                if (ret <= 0) {
+                    while ((c = getchar() != '\n') && c != EOF);
+                    cout << "Insira um valor valido. ( Numero )\n";
+
+                    break;
+                }
+
                 if (value <= 0) {
                     cout << "Insira um valor valido. ( Maior que zero )\n";
                     break;
