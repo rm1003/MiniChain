@@ -30,8 +30,7 @@ client.cpp e server.cpp.
 
 2.2.1 client.cpp
     - Múltiplos clientes.
-    - Decidimos que a conexão é estabelecida e fechada a cada operação, em vez de
-manter uma conexão contínua.
+    - A conexão é estabelecida e fechada a cada operação.
     - A senha é hasheada localmente antes de enviar para o servidor.
     - Menu interativo que mantém o cliente ativo até decisão/intenção de saída.
     - Validação básica no cliente (valores positivos no deposito, evitar
@@ -46,7 +45,7 @@ transferência para si mesmo).
     - A integridade de toda a cadeia é verificada a cada nova inserção, garantindo
 que a blockchain esteja correta.
     - Para obter o saldo do cliente, sempre percorre iterando por toda a blockchain.
-    - Contém as informações em cada bloco: id do cliente, id do destino, valor,
+    - Contém as informações em cada bloco: id do cliente, id do destinatário, valor,
 tipo da transação, timestamp, hash atual e hash anterior.
 
 2.2.4 CustomSocket.hpp
@@ -63,14 +62,15 @@ de mensagens.
 2.3 Dificuldades Encontrados na Implementação
     Algumas dificuldades ao decorrer do desenvoldimento do trabalho:
     - Planejamento geral do trabalho, foi necessário ao decorrer do tempo ir
-trocando algumas decisões para que o trabalho fique do jeito que gostariamos. Por
+trocando algumas decisões para que o trabalho ficasse do jeito que gostariamos. Por
 exemplo a escolha da biblioteca de criptografia hash, a ideia inicial foi utilizar
 a lib OpenSSl, depois foi mudado para Crypto++ e por fim definimos usar PicoSHA2.
     - Planejar as classes Pai e Filho, e a estrutura da mensagem do CustomSocket.
     - Definir como identificamos os usuário, inicialmente a ideia era usar um ID
-para cada usuário distinto, mas para a operação de transferência de MiniCoins no
-lado do servidor não tinha um tipo de mensagem para transferência, assim o servidor
-não sabia como avisar o destinatário que recebeu MiniCoins.
+para cada usuário distinto, mas para a implementação da operação de transferência,
+adotamos uma forma de obter o próprio ID e o ID de outro cliente utilizando o
+username de cada conta, o servidor mantém uma lista de clientes com seus respectivos
+username e senha com hash, atribuíndo um ID único para cada usuário.
 
 
 3. Registro dos Encontros Para o Desenvolvimento do Trabalho
@@ -158,7 +158,7 @@ Adicionada a verificação de integridade da Blockchain para cada operação de 
     Referência:
     https://github.com/okdshin/PicoSHA2/tree/master
 
-11/11/2025
+14/11/2025
     Foi feito testes nas maquinas do lab12, sendo uma máquina como servidor
 contendo a Blockchain e duas máquinas para simular dois clientes/usuários fazendo
 as requisições para o servidor.
