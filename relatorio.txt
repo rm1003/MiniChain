@@ -60,13 +60,13 @@ de mensagens.
 256 bits.
 
 2.3 Dificuldades Encontrados na Implementação
-    Algumas dificuldades ao decorrer do desenvoldimento do trabalho:
+    Algumas dificuldades ao decorrer do desenvolvimento do trabalho:
     - Planejamento geral do trabalho, foi necessário ao decorrer do tempo ir
 trocando algumas decisões para que o trabalho ficasse do jeito que gostariamos. Por
 exemplo a escolha da biblioteca de criptografia hash, a ideia inicial foi utilizar
-a lib OpenSSl, depois foi mudado para Crypto++ e por fim definimos usar PicoSHA2.
+a lib OpenSSL, depois foi mudado para Crypto++ e por fim definimos usar PicoSHA2.
     - Planejar as classes Pai e Filho, e a estrutura da mensagem do CustomSocket.
-    - Definir como identificamos os usuário, inicialmente a ideia era usar um ID
+    - Definir como identificamos os usuários, inicialmente a ideia era usar um ID
 para cada usuário distinto, mas para a implementação da operação de transferência,
 adotamos uma forma de obter o próprio ID e o ID de outro cliente utilizando o
 username de cada conta, o servidor mantém uma lista de clientes com seus respectivos
