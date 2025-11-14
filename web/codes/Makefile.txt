@@ -21,7 +21,7 @@ $(SRV_BIN): $(SRV_SRC)
 	$(CXX) $(CXXFLAGS) -I$(INC) $^ -o $@
 
 $(CLT_BIN): $(CLT_SRC)
-	$(CXX) $(CXXFLAGS) -I$(INC) $^ -o $@
+	$(CXX) $(CXXFLAGS) -I$(INC) $^ -o $@ $(LDFLAGS)
 
 clean:
 	rm -f $(SRV_BIN) $(CLT_BIN)

@@ -19,6 +19,28 @@
     padding: 16px;
 }
 
+.content img {
+    max-width: 100%;
+    width: auto;
+    max-width: 900px;
+    height: auto;
+    display: block;
+    margin: 0.75rem auto;
+}
+
+@media (max-width: 800px) {
+    .content img {
+        max-height: 70vh;
+        object-fit: contain; 
+    }
+}
+
+.content li {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
 a {
     text-decoration: none;
 }
